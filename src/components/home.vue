@@ -1,22 +1,24 @@
 <template>
   <div>
+    <section id="news">
+      <carousel :per-page="6" :navigationEnabled=true>
+        <slide v-for="news in newss" :key="news.nid">
+          <newsteaser :newstitle="news.title" :newscompany="news.field_company_value" :newsdate="news.field_eventtime_value | erasetime" :newsnid="news.nid"/>
+        </slide>
+      </carousel>
+    </section>
+    <div v-if="$store.state.newsnid!=0">
+      <news/>
+    </div>
+
+    <!--
     <section id="webinar">
-      <!--<div class="top">
-        <div class="top-in">
-          <h1>Free Live Webinar of the Fourth Conference on Performance-Based Structural Design using SeismoBuild</h1>
-          <h2>Live Webinar</h2>
-          <div >
-            <p>Saturday, February 17, 2018 - 4:00 pm (Tehran zone:tehran)</p>
-          </div>
-          </div>
-      </div>-->
       <div class="inner">
         <img src="http://civil808.com/sites/all/themes/sara/images/seismosoft.png"  width="324" height="444">
         <div class="webinar-text">
           <p>SeismoBuild is an innovative Finite Elements package for the seismic assessment and strengthening of reinforced concrete framed structures that is targeted to the design office. The program is capable of fully carrying out the Code defined assessment methodologies from the structural modelling, through to the required analyses, and the corresponding member checks.</p>
           <p><strong>Speaker:</strong></p>
           <p>Dr. Stelios Antoniou, Co-founder, Managing Director and R&amp;D Director of the Seismosoft Company</p><p><strong>Program:</strong></p><ul><li>Unveiling of SeismoBuild software in accordance with ASCE41 Code to evaluate and retrofit buildings</li><li>Training workshop on the different types of Seismosoft Softwares</li></ul><p><strong>Conference Date:</strong></p><p>17 February 2018 (Concurrent with the 4th International Conference on Structural Engineering)</p><p><strong>Organizer:</strong></p><p>808 Engineering Education Institute, Official representative of Seismosoft Company in Iran</p><p><strong>Sponsors:</strong></p><ul><li>Iranian Society of Structural Engineering,</li><li>Behsazandishan Company,</li><li>Seismosoft Company</li></ul><b>Watch The Webinar:</b>
-          <!--<a href="http://civil808.com/gallery/videos/playlist/3573/18332"> Watch It </a>-->
         </div>
         
       </div>
@@ -106,19 +108,31 @@
         </div>
       </div>
     </section>
-    
+    -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import { Carousel, Slide } from 'vue-carousel'
+import newsteaser from '@/components/newsteaser'
+import news from '@/components/news'
+
 export default {
   name: 'home',
   data () {
     return {
       inputBox:'',
-      aftersubmit:false
+      aftersubmit:false,
+      newss:[]
     }
+  },
+  mounted() {
+    fetch('http://civil808.com/latin/latin_news?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
+      .then(response => response.json())
+      .then((data) => {
+          this.newss = data
+    })
   },
   methods: {
     addEmail() {
@@ -137,6 +151,19 @@ export default {
 
       this.aftersubmit = true;
       
+    }
+  },
+  components: {
+    Carousel,
+    Slide,
+    newsteaser,
+    news
+  },
+  filters: {
+    erasetime: function (value) {
+        if (!value) return ''
+        value = value.toString()
+        return value.split(' ')[0]
     }
   }
 }

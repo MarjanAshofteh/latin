@@ -19,7 +19,6 @@ export default {
 </script>
 
 <style scoped>
-    
     .atext{
         margin: 50px 0;
         text-align:left;

@@ -308,5 +308,8 @@ section#intro.add a{
         padding: 5px;
     }
 }
-
+section#news{
+    width:80%;
+    margin: 110px auto 20px auto;
+}
 
