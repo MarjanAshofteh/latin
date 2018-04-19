@@ -1,7 +1,8 @@
 <template>
   <div>
     <section id="news">
-      <carousel :per-page="6" :navigationEnabled=true>
+      <h1 class="md-headline">Upcoming Civil Enginnering Events</h1>
+      <carousel :per-page="4" :navigationEnabled=true>
         <slide v-for="news in newss" :key="news.nid">
           <newsteaser :newstitle="news.title" :newscompany="news.field_company_value" :newsdate="news.field_eventtime_value | erasetime" :newsnid="news.nid"/>
         </slide>
@@ -9,6 +10,7 @@
     </section>
     <div v-if="$store.state.newsnid!=0">
       <news/>
+      
     </div>
 
     <!--
@@ -170,19 +172,18 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h1, h2 {
-  font-weight: normal;
+<style>
+
+.VueCarousel-slide{
+  padding: 10px;
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+button.VueCarousel-navigation-button{
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  /* font-size: 0px; */
+  background-color:white;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+
 </style>

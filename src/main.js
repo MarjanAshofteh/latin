@@ -5,7 +5,10 @@ import App from './App'
 import router from './router'
 import store from './store/store'
 import { mapGetters } from 'vuex'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
 
+Vue.use(VueMaterial)
 Vue.config.productionTip = false
 
 /*this is root instance*/

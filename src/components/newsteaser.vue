@@ -1,23 +1,23 @@
 <template>
-    <div class="newsparent">
-        <div class="newsinner">
-            <div class="newsin">
-                <div class="newstext">
-                    {{newstitle}}
-                </div>
-                <div class="datenews">
-                    <div>
-                        {{newscompany}}
-                    </div>
-                    <button @click="set_news(newsnid)">read more...</button>
-                    <div>
-                        <span class="f">{{newsdate}}</span>
-                        <span class="f"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <md-card class="news-teaser md-accent" md-with-hover>   
+      <md-ripple>
+        <md-card-header>
+          <div class="md-title"> {{newstitle}} </div>
+          <div class="md-subhead"> </div>
+        </md-card-header>
+
+        <md-card-content>
+          <b>Date:</b> {{newsdate}}
+        </md-card-content>
+        <md-card-content>
+          <b>Organizer:</b> {{newscompany}}
+        </md-card-content>
+
+        <md-card-actions>
+          <md-button @click="set_news(newsnid)">read more</md-button>
+        </md-card-actions>
+      </md-ripple>
+    </md-card>
 </template>
 
 <script>
@@ -39,43 +39,23 @@ export default {
 </script>
 
 <style>
-    .newsparent {
-        padding: 4px;
-        width: 205px;
-        height: 243px;
-        display: flex;
-        font-size: small;
-        font-family: arial,sans-serif;
+    .md-card.news-teaser{
+        background-color:white;
+        min-height: 240px;
+    }
+    .md-card .md-title {
+        font-size: 15px;
+        letter-spacing: 0;
+        line-height: 21px;
+    }
+    .md-card-content{
+        padding: 4px 16px;
+    }
+    .md-ripple{
         text-align: left;
     }
-    .newsinner {
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
-        padding: 16px;
-        background-color: #fff;
-        border-radius: 2px;
-        display: block;
-        overflow: hidden;
-        width:100%;
-    }
-    .newstext {
-        min-height: 72px;
-        text-align: left;
-        margin-bottom: 30px;
-        -webkit-box-flex: 1;
-        flex: 1 0 auto;
-        line-height: 18px;
-        white-space: normal;
-        word-wrap: break-word;
-    }
-    .datenews {
-        -webkit-box-align: end;
-        align-items: flex-end;
-        align-items: flex-end;
-    }
-    .newsin{
-        height: 100%;
-        display: flex;
-        flex-direction: column;
+    .md-subhead b{
+        color:#333
     }
 </style>
 
