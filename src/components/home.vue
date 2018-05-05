@@ -2,7 +2,7 @@
   <div>
     <section id="news">
       <h1 class="md-headline">Upcoming Civil Enginnering Events</h1>
-      <carousel :per-page="4" :navigationEnabled=true>
+      <carousel :per-page="4" :navigationEnabled=true >
         <slide v-for="news in newss" :key="news.nid">
           <newsteaser :newstitle="news.title" :newscompany="news.field_company_value" :newsdate="news.field_eventtime_value | erasetime" :newsnid="news.nid"/>
         </slide>

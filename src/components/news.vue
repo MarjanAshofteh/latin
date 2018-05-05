@@ -1,24 +1,50 @@
 <template>
-  <md-content class="news md-elevation-2">
+  <md-content class="news md-elevation-2" v-if="showornot">
+    <button @click="close=true"> x </button>
     <div class="md-title">{{news.title}}</div>
-    <div class="md-body-2" v-html="news.body_value"></div>
+    <div class="md-layout md-gutter">
+      <div class="md-layout-item" v-if="'uri' in news">
+        <img v-bind:src="news.uri | converturl " />
+      </div>
+      <div class="md-body-2 md-layout-item md-size-80" v-html="news.body_value"></div>
+    </div>
+    
   </md-content>
 </template>
 
 <script>
 
-
 export default {
   name: 'news',
   data(){
     return{
-      news:[]
+      news:[],
+      close:false
     }
   },
   mounted(){
+    console.log('mounted')
     this.$store.watch(s =>{
+      this.close=false
       this.getnews()
     })
+  },
+  beforeUpdate(){
+    console.log('before update')
+  },
+  updated(){
+    console.log('updatedddddddddddddddddd')
+  },
+  beforeDestroy(){
+    console.log('before destrooooooooooy')
+  },
+  computed:{
+    showornot(){
+      if(this.news!=false && this.close==false)
+        return true
+      else
+        return false
+    }
   },
   methods:{
     getnews(){
@@ -26,24 +52,32 @@ export default {
       fetch('http://civil808.com/latin/latin_news/'+ this.$store.state.newsnid +'?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
         .then(response => response.json())
         .then((data) => {
-          this.news = data.news
+          this.news = data.latin_news
       })
+    }
+  },
+  filters: {
+    converturl: function(value){
+        if (!value) return '';
+        var thestart = 'http://civil808.com/sites/default/files/styles/808/public';
+        var theend = value.substr(8);
+        return thestart + theend;
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .md-content.news{
   width: 76%;
-  margin: auto;
+  margin: 0 auto 35px;
   padding: 25px 25px;
   text-align:left;
   background-color: white; 
-}
-.news .md-title{
-  border-bottom: 1px solid #eee;
-  padding-bottom: 20px;
+  .md-title{
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+  }
 }
 </style>
 
