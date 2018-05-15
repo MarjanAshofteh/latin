@@ -30,4 +30,7 @@ export default {
         position: relative;
         font-size: 35px;
     }
+    .inner{
+        padding: 0 20px;
+    }
 </style>

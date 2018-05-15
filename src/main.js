@@ -7,6 +7,7 @@ import store from './store/store'
 import { mapGetters } from 'vuex'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
+import './assets/app.scss'
 
 Vue.use(VueMaterial)
 Vue.config.productionTip = false

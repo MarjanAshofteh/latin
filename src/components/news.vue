@@ -1,12 +1,17 @@
 <template>
   <md-content class="news md-elevation-2" v-if="showornot">
-    <button @click="close=true"> x </button>
+    <md-button @click="close=true" class="md-icon-button myclose">
+        <md-icon >close</md-icon>
+      </md-button>
     <div class="md-title">{{news.title}}</div>
-    <div class="md-layout md-gutter">
-      <div class="md-layout-item" v-if="'uri' in news">
+    <div class="md-layout md-gutter" v-if="'uri' in news">
+      <div class="md-layout-item">
         <img v-bind:src="news.uri | converturl " />
       </div>
-      <div class="md-body-2 md-layout-item md-size-80" v-html="news.body_value"></div>
+      <div class="md-body-2 md-layout-item md-size-100" v-html="news.body_value"></div>
+    </div>
+    <div class="md-layout md-gutter" v-else>
+      <div class="md-body-2 md-layout-item md-size-100 " v-html="news.body_value"></div>
     </div>
     
   </md-content>
@@ -30,13 +35,13 @@ export default {
     })
   },
   beforeUpdate(){
-    console.log('before update')
+    //console.log('before update')
   },
   updated(){
-    console.log('updatedddddddddddddddddd')
+    //console.log('updatedddddddddddddddddd')
   },
   beforeDestroy(){
-    console.log('before destrooooooooooy')
+    //console.log('before destrooooooooooy')
   },
   computed:{
     showornot(){
@@ -70,13 +75,19 @@ export default {
 <style lang="scss">
 .md-content.news{
   width: 76%;
-  margin: 0 auto 35px;
+  margin: 35px auto 35px;
   padding: 25px 25px;
   text-align:left;
-  background-color: white; 
+  position: relative;
   .md-title{
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
+    margin-bottom: 9px;
+  }
+  .myclose{
+    position: absolute;
+    top:10px;
+    right:5px;
   }
 }
 </style>
