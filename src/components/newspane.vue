@@ -76,11 +76,18 @@ button.VueCarousel-navigation-button{
   text-align: center;
   line-height: 30px;
   padding: 0 !important;
-  color:rgba(0, 0, 0, 0.54);
+  color:#92278f !important;
 }
 .newspane{
   background-color: #fafafa;
-  margin-bottom: 64px;
+  margin-bottom: 100px;
+}
+section#news{
+  width: 80%;
+  margin: 80px auto 20px auto;
+}
+.md-headline{
+  margin-bottom: 40px;
 }
 
 </style>

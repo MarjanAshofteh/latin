@@ -33,4 +33,21 @@ export default {
     .inner{
         padding: 0 20px;
     }
+    .top-pic{
+        background-image: url(http://civil808.com/seismosoft/conf.jpg);
+        background-size: cover;
+        background-position: center;
+        height: 241px;
+        position: relative;
+        margin-top: 50px;
+    }
+    .top-pic:before {
+        content: '';
+        width: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 100%;
+        background-color: #0000005e;
+    }
 </style>

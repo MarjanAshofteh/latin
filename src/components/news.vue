@@ -1,7 +1,7 @@
 <template>
   <md-content class="news md-elevation-2" v-if="showornot">
     <md-button @click="close=true" class="md-icon-button myclose">
-        <md-icon >close</md-icon>
+        <md-icon>close</md-icon>
       </md-button>
     <div class="md-title">{{news.title}}</div>
     <div class="md-layout md-gutter" v-if="'uri' in news">
@@ -88,6 +88,9 @@ export default {
     position: absolute;
     top:10px;
     right:5px;
+    .md-icon{
+      color:#92278f;
+    }
   }
 }
 </style>
