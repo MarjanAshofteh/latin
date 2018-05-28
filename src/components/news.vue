@@ -45,7 +45,8 @@ export default {
   },
   computed:{
     showornot(){
-      if(this.news!=false && this.close==false)
+      //this.news!=false && 
+      if(this.close==false)
         return true
       else
         return false

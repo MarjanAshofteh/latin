@@ -31,7 +31,7 @@
 
     <section id="playlist">
       <div class="inner">
-        <img src="http://civil808.com/seismosoft/playlist.jpg" alt="">
+        <img src="http://civil808.com/en/staticfile/playlist.jpg" alt="">
         <div class="right">
           <h2>Educational Videos for SeismoStruct</h2>
           <p>
@@ -64,21 +64,21 @@
         </h1>
         <div class="main">
             <div class="left seismoStruct">
-                <img src="http://civil808.com/seismosoft/seismostruct.png"/>
+                <img src="http://civil808.com/en/staticfile/seismostruct.png"/>
                 <h3>SeismoStruct</h3>
                 <p>
                     is an award-winning program developed for the accurate analytical assessment of different classes of structures, such as buildings, bridges or industrial plants, subjected to earthquake strong motion. It features a number of verified nonlinear static and dynamic analysis methods (pushover, incremental dynamic analysis, etc.) so as to meet the analytical requirements posed by the modern performance-based seismic assessment and design philosophy.
                 </p>
             </div>
             <div class="middle seismoSignal">
-                <img src="http://civil808.com/seismosoft/seismosignal.png"/>
+                <img src="http://civil808.com/en/staticfile/seismosignal.png"/>
                 <h3>SeismoSignal</h3>
                 <p>
                     constitutes a simple, yet efficient, package for the processing of strong-motion data. Amongst other things, it allows for the derivation of elastic and constant ductility inelastic response spectra, computation of Fourier amplitude spectra, filtering of high and low frequency record content and estimation of other important seismological parameters, such as the Arias Intensity and the significant and effective durations.
                 </p>
             </div>
             <div class="right seismoApps">
-                <img src="http://civil808.com/seismosoft/seismostruct.png"/>
+                <img src="http://civil808.com/en/staticfile/seismostruct.png"/>
                 <h3>SeismoApps</h3>
                 <p>
                     <strong>SeismoMatch</strong> is an application capable of adjusting earthquake records, through wavelet addition, to match a specific target response spectrum
@@ -376,7 +376,7 @@ export default {
         }
     }
     section#subscribe{
-        background-image: url(http://civil808.com/seismosoft/3931.jpg);
+        background-image: url(http://civil808.com/en/staticfile/3931.jpg);
         padding: 80px 0 90px 0;
         background-size: cover;
         background-position: center;

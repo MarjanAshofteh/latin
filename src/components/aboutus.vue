@@ -34,7 +34,7 @@ export default {
         padding: 0 20px;
     }
     .top-pic{
-        background-image: url(http://civil808.com/seismosoft/conf.jpg);
+        background-image: url(http://civil808.com/en/staticfile/conf.jpg);
         background-size: cover;
         background-position: center;
         height: 241px;
