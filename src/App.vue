@@ -2,7 +2,7 @@
   <div id="app">
     <header id="header">
       <div class="inner md-layout md-gutter">
-        <img src="http://civil808.com/seismosoft/logo.png">
+        <img src="http://civil808.com/en/staticfile/logo.png">
         <div class="md-layout-item md-medium-size-50 md-small-size-50 md-xsmall-hide">
           <p>Educational and Engineering institute 808</p>
           <span class="md-layout-item md-small-hide">specialized training in Civil and Architecture</span>
