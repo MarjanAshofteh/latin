@@ -6,11 +6,16 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     //strict: process.env.NODE_ENV !== 'production',  
     state:{
-        newsnid: 0
+        newsnid: 0,
+        news_loading : true
     },
     mutations:{
         SET_NEWS(state,newnid){
             state.newsnid = newnid
+            state.news_loading = true            
+        },
+        SET_NEWS_LOADING(state){
+            state.news_loading = false
         },
         INCREMENT(state) {
             state.test++
