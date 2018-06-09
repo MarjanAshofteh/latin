@@ -14,6 +14,9 @@
           <md-menu md-direction="bottom-start">
             <md-button><router-link to="/">Home</router-link></md-button>
           </md-menu>
+          <md-menu md-direction="bottom-start">
+            <md-button><router-link to="/register">register</router-link></md-button>
+          </md-menu>
           <!--
           <md-menu md-direction="bottom-start">
             <md-button class="md-primary" @click="gotosubscribe()">Subscribe</md-button>
