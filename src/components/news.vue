@@ -1,6 +1,9 @@
 <template>
   <md-content class="news md-elevation-2" v-if="showornot">
-    <md-button @click="close=true" class="md-icon-button myclose">
+    <div class="loading" v-if="$store.state.news_loading">
+      <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+    </div>
+    <md-button @click="clear_news()" class="md-icon-button myclose">
         <md-icon>close</md-icon>
       </md-button>
     <div class="md-title">{{news.title}}</div>
@@ -59,8 +62,13 @@ export default {
         .then(response => response.json())
         .then((data) => {
           this.news = data.latin_news
+          this.$store.commit('SET_NEWS_LOADING');
       })
-    }
+    },
+    clear_news(){
+        this.close=true
+        this.$store.commit('SET_NEWS', 0);
+    } 
   },
   filters: {
     converturl: function(value){
@@ -74,6 +82,20 @@ export default {
 </script>
 
 <style lang="scss">
+.loading {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background: #fff;
+}
+:root{
+    --md-theme-default-primary: #673AB7;
+}
+.md-progress-spinner {
+	position: absolute;
+}
 .md-content.news{
   width: 76%;
   margin: 35px auto 35px;
