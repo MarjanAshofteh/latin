@@ -51,6 +51,7 @@ export default {
             sessid:'',
             session_name:'',
             token:'',
+            uid:0,
             form:{
                 username_email: null,
                 password: null,
@@ -97,16 +98,19 @@ export default {
                 this.sessid = data.data.sessid
                 this.session_name = data.data.session_name
                 this.token = data.data.token
-                //var jsonCookie = JSON.stringify(this.createSession)
+                this.uid = data.data.uid
                 var jsonCookie = this.session_name + '=' + this.sessid
                 var jsonCookie2 = this.token
+                var jsonCookie3 = this.uid
                 //save data to cookie storage
                 this.setCookie("user_cookie", jsonCookie , 23)
                 this.setCookie("token", jsonCookie2 , 23)
+                this.setCookie("uid", jsonCookie3 , 23)
                 this.lastUser = `${this.form.username_email}`
                 this.userSaved = true
                 this.sending = false
-                this.$router.push('/profile') //this line isn't working
+                this.loged_in(this.uid)
+                this.$router.push('/profile/'+ this.uid)
                 this.clearForm()
             })
             .catch(e => {
@@ -149,27 +153,24 @@ export default {
             }
             return null
         },
-        eraseCookie(name) {this.setCookie(name, "", -1);}
+        eraseCookie(name) {this.setCookie(name, "", -1);},
+        loged_in(uid){
+            if(uid != 0)
+            this.$store.commit('LOGEDIN', uid);
+        }
     },
     mounted(){
         if((this.getCookie("user_cookie")!= null) && (this.getCookie("token")!= null)){
-            this.$router.push('/profile')
+            this.$router.push('/profile/'+ this.getCookie("uid"))
         }
     },
     computed:{
-        createSession(){
-            return this.session_name + '=' + this.sessid
-            /*return{
-                "sessid": this.sessid,
-                "session_name": this.session_name,
-                "token":this.token
-            }*/
-        },
         createPostData(){
             return{
                 hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
                 username_email : this.form.username_email,
-                password : this.form.password
+                password : this.form.password,
+                version : 'pbd_0'
             }
         }
     }

@@ -37,6 +37,10 @@
                             <span class="item-text">History</span>
                         </div>
                         <div class="box-text">
+                            <div v-if="user.uid">
+                                <span class="label">User Id: </span>
+                                {{user.uid}}
+                            </div>
                             <div v-if="user.name">
                                 <span class="label">Username: </span>
                                 {{user.name}}
@@ -114,25 +118,9 @@ export default {
             cookie:'',
             token:'',
             roles:[],
-            uid:262,
+            uid:this.$route.params.uid,
             loading: true,
-            user:{
-                /*background_image:'',
-                picture:'',
-                name:'',
-                full_name:'',
-                mail:'',
-                mobile:'',
-                about_me:'',
-                university:'',
-                education_field:'',
-                education_degree:'',
-                job:'',
-                skills:'',
-                uid:'',
-                created:'',
-                login:'',*/
-            }
+            user:{}
         }
     },
     mounted(){

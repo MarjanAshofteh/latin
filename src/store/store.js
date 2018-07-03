@@ -8,7 +8,8 @@ const store = new Vuex.Store({
     state:{
         newsnid: 0,
         news_loading : true,
-        isLogedIn : false
+        isLogedIn : false,
+        logedInUid : 0
     },
     mutations:{
         SET_NEWS(state,newnid){
@@ -20,6 +21,15 @@ const store = new Vuex.Store({
         },
         INCREMENT(state) {
             state.test++
+        },
+        LOGEDIN(state,logedInUid){
+            state.isLogedIn = true
+            state.logedInUid = logedInUid            
+        },
+        LOGEDOUT(state,logoutUid){
+            state.isLogedIn = false
+            if(state.logedInUid == logoutUid)
+                state.logedInUid = 0
         }
     },
     getters:{

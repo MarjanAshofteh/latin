@@ -12,7 +12,7 @@
               <md-button><router-link to="about-us">about us</router-link></md-button>
             </md-menu>
           </div>
-          <div v-if="$store.state.isLogedIn" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
+          <div v-if="!$store.state.isLogedIn" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
             <md-menu md-direction="bottom-start">
               <md-button>
                 <router-link to="login">login</router-link>
@@ -28,11 +28,12 @@
             <md-menu md-size="small"  md-direction="bottom-end" md-align-trigger>
               <md-button class="md-icon-button" md-menu-trigger>
                 <md-avatar>
-                  <img v-bind:src="get_gravatar('marjan.cs90@gmail.com',40)" alt="Avatar">
+                  <!--<img v-bind:src="get_gravatar('m.razmi.92@gmail.com',40)" alt="Avatar">-->
+                  <img v-bind:src="src" alt="user_image">
                 </md-avatar>
               </md-button>
                 <md-menu-content>
-                  <md-menu-item @click="$router.push('/profile')">My Profile</md-menu-item>
+                  <md-menu-item @click="$router.push('/profile/'+ uid)">My Profile</md-menu-item>
                   <md-menu-item>log out</md-menu-item>
                 </md-menu-content>
               </md-menu>
@@ -50,6 +51,39 @@ import axios from 'axios'
 
 export default {
   name: 'App',
+  data(){
+    return{
+      src:'',
+      uid:'',
+      username:''
+    }
+  },
+  mounted(){
+    if((this.getCookie("user_cookie")!= null) && (this.getCookie("token")!= null)){
+      this.uid = this.getCookie("uid")
+      this.loged_in(this.uid)
+      axios.get('http://ali.dev.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+      {
+        headers:{
+        'Content-type': 'application/json'
+        }
+      })
+      .then((data) => {
+        this.src = data.data.picture
+        this.username = data.data.username
+        console.log(data)
+        /*for(var field in this.user){
+            this.user[field] = data.data[field]
+        }
+        /*for (var key in data.data.roles) {
+            this.roles.push(data.data.roles[key])
+        }*/
+      })
+      .catch(e => {
+          this.errors = e.response.data
+      });
+    }
+  },
   methods:{
     get_gravatar(email, size) {
       // MD5 (Message-Digest Algorithm) by WebToolkit 
@@ -64,6 +98,21 @@ export default {
         left: ele.offsetLeft, 
         behavior: 'smooth' 
       });
+    },
+    getCookie(name) {
+      var nameEQ = name + "="
+      var ca = document.cookie.split(';')
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i]
+        //console.log(c)
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
+      }
+      return null
+    },
+    loged_in(uid){
+      if(uid != 0)
+      this.$store.commit('LOGEDIN', uid);
     }
   }
 }

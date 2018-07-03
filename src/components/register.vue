@@ -15,15 +15,6 @@
                 <span class="md-error" v-else-if="!$v.form.fullName.minlength">Should be at least 3 character</span>
               </md-field>
             </div>
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field :class="getValidationClass('mobile')">
-              <label for="mobile">Mobile Number</label>
-              <md-input type="tel" id="mobile" name="mobile" autocomplete="tel" v-model="form.mobile" :disabled="sending" required/>
-              <span class="md-error" v-if="!$v.form.mobile.required">The Mobile Number is required</span>
-              <span class="md-error" v-else-if="!$v.form.mobile.numeric">It must be Number</span>
-              <span class="md-error" v-else-if="!$v.form.mobile.minlength">Should be at least 8 character</span>  
-            </md-field>
-          </div>
 
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('email')">
@@ -86,7 +77,7 @@
     email,
     minLength,
     maxLength,
-    numeric,
+    //numeric,
     sameAs
   } from 'vuelidate/lib/validators'
   import login from '@/components/login'
@@ -97,9 +88,12 @@
     data: () => ({
       errors:'',
       showError:false,
+      sessid:'',
+      session_name:'',
+      token:'',
+      uid:0,
       form: {
         fullName: null,
-        mobile: null,
         email: null,
         username: null,
         password: null,
@@ -114,11 +108,6 @@
         fullName: {
           required,
           minLength: minLength(3)
-        },
-        mobile: {
-          required,
-          minLength: minLength(8),
-          numeric
         },
         email: {
           required,
@@ -151,7 +140,6 @@
       clearForm () {
         this.$v.$reset()
         this.form.fullName = null
-        this.form.mobile = null
         this.form.email = null
         this.form.username = null
         this.form.password = null
@@ -167,21 +155,23 @@
           "password" : this.form.password,
           "email" : this.form.email,
           "full_name" : this.form.fullName,
-          "mobile" : this.form.mobile
+          "version" : "pbd_0"
         }
         console.log(userData)
-        axios.post('http://civil808.com/latin/user/register2',
+        axios.post('http://ali.dev.com/latin/user/register2',
           userData,
           {
             headers: {
             'Content-type': 'application/json',
             }
           })
-          //.then(response => console.log('yeeeeeeeeh'))
           .then((data) => {
+            this.loguserin(data)
             this.lastUser = `${this.form.fullName}`
             this.userSaved = true
             this.sending = false
+            this.loged_in(this.uid)
+            this.$router.push('/profile/'+ this.uid)
             this.clearForm()
             /* log user in by calling login component */
           })
@@ -197,6 +187,50 @@
         if (!this.$v.$invalid) {
           this.saveUser()
         }
+      },
+      loguserin(data){
+        this.sessid = data.data.sessid
+        this.session_name = data.data.session_name
+        this.token = data.data.token
+        this.uid = data.data.uid
+        var jsonCookie = this.session_name + '=' + this.sessid
+        var jsonCookie2 = this.token
+        var jsonCookie3 = this.uid
+        //save data to cookie storage
+        this.setCookie("user_cookie", jsonCookie , 23)
+        this.setCookie("token", jsonCookie2 , 23)
+        this.setCookie("uid", jsonCookie3 , 23)
+        this.loged_in(this.uid)
+        this.$router.push('/profile/'+ this.uid)
+      },
+      setCookie(name, value, days){
+        var cookie = name + "=" + value + ";"
+        if (days) { 
+          var expires = new Date()
+          expires = new Date(expires.getFullYear(),expires.getMonth(),expires.getDate()+days)
+          cookie += "expires=" + expires + ";"
+        }
+        document.cookie = cookie + expires + "; path=/"
+      },
+      getCookie(name) {
+        var nameEQ = name + "="
+        var ca = document.cookie.split(';')
+        for (var i = 0; i < ca.length; i++) {
+          var c = ca[i]
+          //console.log(c)
+          while (c.charAt(0) == ' ') c = c.substring(1, c.length)
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
+        }
+        return null
+      },
+      loged_in(uid){
+        if(uid != 0)
+        this.$store.commit('LOGEDIN', uid);
+      }
+    },
+    mounted(){
+      if((this.getCookie("user_cookie")!= null) && (this.getCookie("token")!= null)){
+        this.$router.push('/profile/'+ this.getCookie("uid"))
       }
     }
   }
