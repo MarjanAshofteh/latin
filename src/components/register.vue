@@ -73,6 +73,7 @@
         {{errors}}
         </pre>
       <md-snackbar :md-active.sync="userSaved">The user {{ lastUser }} was saved with success!</md-snackbar>
+      <md-snackbar class="error" :md-active.sync="showError">{{ errors }}</md-snackbar>
     </form>
   </div>
 </template>
@@ -88,12 +89,14 @@
     numeric,
     sameAs
   } from 'vuelidate/lib/validators'
+  import login from '@/components/login'
 
   export default {
     name: 'register',
     mixins: [validationMixin],
     data: () => ({
-      errors: [],
+      errors:'',
+      showError:false,
       form: {
         fullName: null,
         mobile: null,
@@ -153,6 +156,8 @@
         this.form.username = null
         this.form.password = null
         this.form.rePassword = null
+        this.showError = false
+        this.errors = ''
       },
       saveUser () {
         this.sending = true
@@ -172,22 +177,19 @@
             'Content-type': 'application/json',
             }
           })
-          .then(response => console.log('yeeeeeeeeh'))
-          /*.then((data) => {
+          //.then(response => console.log('yeeeeeeeeh'))
+          .then((data) => {
             this.lastUser = `${this.form.fullName}`
             this.userSaved = true
             this.sending = false
             this.clearForm()
-            console.log(data)
-          })*/
+            /* log user in by calling login component */
+          })
           .catch(e => {
-              this.errors.push(e)
+              this.errors = e.response.data
+              this.showError = true
+              this.clearForm()
           });
-
-        /* Instead of this timeout, here you can call your API
-        window.setTimeout(() => {
-          
-        }, 1500)*/
       },
       validateUser () {
         this.$v.$touch()
@@ -223,5 +225,8 @@
     background-color:#ba68c8; 
     padding: 30px 0;
     /* @todo : make it colored from variables not hard code */
+  }
+  .md-snackbar.error{
+    background-color: #F44336;
   }
 </style>

@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     //strict: process.env.NODE_ENV !== 'production',  
     state:{
         newsnid: 0,
-        news_loading : true
+        news_loading : true,
+        isLogedIn : false
     },
     mutations:{
         SET_NEWS(state,newnid){
