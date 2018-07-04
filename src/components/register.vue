@@ -28,7 +28,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('username')">
               <label for="username">Username</label>
-              <md-input id="username" name="username" v-model="form.username" :disabled="sending" required/>
+              <md-input id="username" name="username" v-model="form.username" autocomplete="given-name" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.username.required">The Username is required</span>
               <!--<span class="md-error" v-else-if="!$v.form.mobile.taken">The User is already taken</span>-->
             </md-field>
@@ -37,7 +37,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('password')">
               <label for="password">Password</label>
-              <md-input type="password" id="password" name="password" v-model="form.password" :disabled="sending" required/>
+              <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
               <span class="md-error" v-else-if="!$v.form.password.minlength">Should be at least 6 character</span>  
             </md-field>
@@ -46,7 +46,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('rePassword')">
               <label for="rePassword">Password Confirmation</label>
-              <md-input type="password" name="rePassword" v-model="form.rePassword" :disabled="sending" required/>
+              <md-input type="password" name="rePassword" v-model="form.rePassword" autocomplete="new-password" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.rePassword.required">The Password Confirmation is required</span>
               <span class="md-error" v-else-if="!$v.form.rePassword.sameAsPassword">Password is not the same</span>  
             </md-field>

@@ -6,22 +6,18 @@
         <div class="md-layout md-gutter">
           <div class="header-menu-text md-layout-item md-size-70 md-xsmall-size-100"> 
             <md-menu md-direction="bottom-start">
-              <md-button><router-link to="/">Home</router-link></md-button>
+              <router-link to="/"><md-button>Home</md-button></router-link>
             </md-menu>
             <md-menu md-direction="bottom-start">
-              <md-button><router-link to="about-us">about us</router-link></md-button>
+              <router-link to="/about-us"><md-button>about us</md-button></router-link>
             </md-menu>
           </div>
           <div v-if="!$store.state.isLogedIn" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
             <md-menu md-direction="bottom-start">
-              <md-button>
-                <router-link to="login">login</router-link>
-              </md-button>
+              <router-link to="/login"><md-button>login</md-button></router-link>
             </md-menu>
             <md-menu md-direction="bottom-start">
-              <md-button>
-                <router-link to="/register">register</router-link>
-              </md-button>
+              <router-link to="/register"><md-button>register</md-button></router-link>
             </md-menu>
           </div>
           <div v-else class="header-menu-right md-layout-item md-size-30 md-xsmall-size-100"> 
@@ -29,12 +25,14 @@
               <md-button class="md-icon-button" md-menu-trigger>
                 <md-avatar>
                   <!--<img v-bind:src="get_gravatar('m.razmi.92@gmail.com',40)" alt="Avatar">-->
-                  <img v-bind:src="src" alt="user_image">
+                  <img v-if="src" v-bind:src="src" alt="user_image">
+                  <img v-else src="http://civil808.com/en/staticfile/avatar.png" alt="user_image">
+                  <md-tooltip md-direction="right">{{username}}</md-tooltip>
                 </md-avatar>
               </md-button>
                 <md-menu-content>
                   <md-menu-item @click="$router.push('/profile/'+ uid)">My Profile</md-menu-item>
-                  <md-menu-item>log out</md-menu-item>
+                  <md-menu-item @click="log_user_out">log out</md-menu-item>
                 </md-menu-content>
               </md-menu>
           </div>
@@ -42,7 +40,7 @@
       </div>
     </header>
     <router-view/>
-
+    <md-snackbar :md-active.sync="userlogout">You log out successfully!</md-snackbar>
   </div>
 </template>
 
@@ -55,7 +53,8 @@ export default {
     return{
       src:'',
       uid:'',
-      username:''
+      username:'',
+      userlogout:false
     }
   },
   mounted(){
@@ -71,16 +70,9 @@ export default {
       .then((data) => {
         this.src = data.data.picture
         this.username = data.data.username
-        console.log(data)
-        /*for(var field in this.user){
-            this.user[field] = data.data[field]
-        }
-        /*for (var key in data.data.roles) {
-            this.roles.push(data.data.roles[key])
-        }*/
       })
       .catch(e => {
-          this.errors = e.response.data
+        console.log('errors for nav_bar_info : ' + e)
       });
     }
   },
@@ -113,7 +105,41 @@ export default {
     loged_in(uid){
       if(uid != 0)
       this.$store.commit('LOGEDIN', uid);
-    }
+    },
+    log_user_out(){
+      axios.post('http://ali.dev.com/latin/user/logout',
+      true,{
+        headers:{
+        'Content-type': 'application/json',
+        'X-CSRF-Token': this.getCookie("token")
+        }
+      })
+      .then((data) => {
+        this.loged_out(this.uid)
+        this.eraseCookie('user_cookie')
+        this.eraseCookie('token')
+        this.eraseCookie('uid')
+        this.userlogout = true
+        this.$router.push('/')
+      })
+      .catch(e => {
+        console.log('errors for logout : ' + e)
+      });
+    },
+    loged_out(uid){
+      if(uid != 0)
+      this.$store.commit('LOGEDOUT', uid);
+    },
+    eraseCookie(name) {this.setCookie(name, "", -1);},
+    setCookie(name, value, days){
+      var cookie = name + "=" + value + ";"
+      if (days) { 
+          var expires = new Date()
+          expires = new Date(expires.getFullYear(),expires.getMonth(),expires.getDate()+days)
+          cookie += "expires=" + expires + ";"
+      }
+      document.cookie = cookie + expires + "; path=/"
+    },
   }
 }
 </script>
