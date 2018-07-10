@@ -81,17 +81,14 @@
     sameAs
   } from 'vuelidate/lib/validators'
   import login from '@/components/login'
+  import { cookie } from './mixins/cookie.js'
 
   export default {
     name: 'register',
-    mixins: [validationMixin],
+    mixins: [validationMixin,cookie],
     data: () => ({
       errors:'',
       showError:false,
-      sessid:'',
-      session_name:'',
-      token:'',
-      uid:0,
       form: {
         fullName: null,
         email: null,
@@ -158,7 +155,7 @@
           "version" : "pbd_0"
         }
         console.log(userData)
-        axios.post('http://ali.dev.com/latin/user/register2',
+        axios.post('http://civil808.com/latin/user/register2',
           userData,
           {
             headers: {
@@ -170,15 +167,33 @@
             this.lastUser = `${this.form.fullName}`
             this.userSaved = true
             this.sending = false
-            this.loged_in(this.uid)
-            this.$router.push('/profile/'+ this.uid)
+            if(data.data.uid != 0){
+              this.is_login(data.data.uid)
+              axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+              {
+                headers:{
+                'Content-type': 'application/json'
+                }
+              })
+              .then((data) => {
+                if(data.data.uid != 0){
+                  this.is_login(data.data.uid)
+                  this.nav_bar(data.data.picture,data.data.username)
+                  this.$router.push('/profile/'+ data.data.uid)
+                }
+              })
+              .catch(e => {
+                console.log('errors for nav_bar_info : ' + e)
+              })
+          }
+            this.$router.push('/profile/'+ data.data.uid)
             this.clearForm()
             /* log user in by calling login component */
           })
           .catch(e => {
               this.errors = e.response.data
               this.showError = true
-              this.clearForm()
+              //this.clearForm()
           });
       },
       validateUser () {
@@ -189,48 +204,19 @@
         }
       },
       loguserin(data){
-        this.sessid = data.data.sessid
-        this.session_name = data.data.session_name
-        this.token = data.data.token
-        this.uid = data.data.uid
-        var jsonCookie = this.session_name + '=' + this.sessid
-        var jsonCookie2 = this.token
-        var jsonCookie3 = this.uid
+        this.is_login(data.data.uid)
+        var jsonCookie2 = data.data.token
         //save data to cookie storage
-        this.setCookie("user_cookie", jsonCookie , 23)
         this.setCookie("token", jsonCookie2 , 23)
-        this.setCookie("uid", jsonCookie3 , 23)
-        this.loged_in(this.uid)
-        this.$router.push('/profile/'+ this.uid)
+        this.$router.push('/profile/'+ data.data.uid)
       },
-      setCookie(name, value, days){
-        var cookie = name + "=" + value + ";"
-        if (days) { 
-          var expires = new Date()
-          expires = new Date(expires.getFullYear(),expires.getMonth(),expires.getDate()+days)
-          cookie += "expires=" + expires + ";"
-        }
-        document.cookie = cookie + expires + "; path=/"
-      },
-      getCookie(name) {
-        var nameEQ = name + "="
-        var ca = document.cookie.split(';')
-        for (var i = 0; i < ca.length; i++) {
-          var c = ca[i]
-          //console.log(c)
-          while (c.charAt(0) == ' ') c = c.substring(1, c.length)
-          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
-        }
-        return null
-      },
-      loged_in(uid){
-        if(uid != 0)
-        this.$store.commit('LOGEDIN', uid);
+      is_login(uid){
+        this.$store.commit('ISLOGIN',uid);
       }
     },
     mounted(){
-      if((this.getCookie("user_cookie")!= null) && (this.getCookie("token")!= null)){
-        this.$router.push('/profile/'+ this.getCookie("uid"))
+      if(this.getCookie("token")!= null){
+        this.$router.push('/profile/'+ this.uid)
       }
     }
   }
