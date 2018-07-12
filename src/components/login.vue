@@ -40,16 +40,15 @@
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
+import { cookie } from './mixins/cookie.js'
 
 export default {
     name: 'login',
-    mixins: [validationMixin],
+    mixins: [validationMixin,cookie],
     data(){
         return{
             errors:'',
             showError:false,
-            sessid:'',
-            session_name:'',
             token:'',
             form:{
                 username_email: null,
@@ -87,26 +86,39 @@ export default {
         logUserIn(){
             this.sending = true
             var data = this.createPostData
-            axios.post('http://ali.dev.com/latin/user/login2', 
+            axios.post('http://civil808.com/latin/user/login2', 
             data,{
                     headers: {
                     'Content-type': 'application/json'
                     }
                 })
             .then((data) => {
-                this.sessid = data.data.sessid
-                this.session_name = data.data.session_name
                 this.token = data.data.token
-                //var jsonCookie = JSON.stringify(this.createSession)
-                var jsonCookie = this.session_name + '=' + this.sessid
                 var jsonCookie2 = this.token
                 //save data to cookie storage
-                this.setCookie("user_cookie", jsonCookie , 23)
                 this.setCookie("token", jsonCookie2 , 23)
                 this.lastUser = `${this.form.username_email}`
                 this.userSaved = true
                 this.sending = false
-                this.$router.push('/profile') //this line isn't working
+                if(data.data.uid != 0){
+                    this.is_login(data.data.uid)
+                    axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+                    {
+                        headers:{
+                        'Content-type': 'application/json'
+                        }
+                    })
+                    .then((data) => {
+                        if(data.data.uid != 0){
+                            this.is_login(data.data.uid)
+                            this.nav_bar(data.data.picture,data.data.username)
+                            this.$router.push('/profile/'+ data.data.uid)
+                        }
+                    })
+                    .catch(e => {
+                        console.log('errors for nav_bar_info : ' + e)
+                    })
+                }
                 this.clearForm()
             })
             .catch(e => {
@@ -122,54 +134,24 @@ export default {
                 this.logUserIn()
             }
         },
-        getUserCookie(name){
-            var obj = JSON.parse(this.getCookie("user_cookie"))
-            if (name){
-                return obj[name]
-            }
-            return null
-        },
-        setCookie(name, value, days){
-            var cookie = name + "=" + value + ";"
-            if (days) { 
-                var expires = new Date()
-                expires = new Date(expires.getFullYear(),expires.getMonth(),expires.getDate()+days)
-                cookie += "expires=" + expires + ";"
-            }
-            document.cookie = cookie + expires + "; path=/"
-        },
-        getCookie(name) {
-            var nameEQ = name + "="
-            var ca = document.cookie.split(';')
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i]
-                //console.log(c)
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length)
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
-            }
-            return null
-        },
-        eraseCookie(name) {this.setCookie(name, "", -1);}
+        is_login(uid){
+            this.$store.commit('ISLOGIN',uid);
+        }
     },
     mounted(){
-        if((this.getCookie("user_cookie")!= null) && (this.getCookie("token")!= null)){
-            this.$router.push('/profile')
+        console.log('login.vue mounted')
+        if(this.getCookie("token")!= null){
+            if(this.$store.state.uid != 0)
+                this.$router.push('/profile/'+ this.$store.state.uid)
         }
     },
     computed:{
-        createSession(){
-            return this.session_name + '=' + this.sessid
-            /*return{
-                "sessid": this.sessid,
-                "session_name": this.session_name,
-                "token":this.token
-            }*/
-        },
         createPostData(){
             return{
                 hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
                 username_email : this.form.username_email,
-                password : this.form.password
+                password : this.form.password,
+                version : 'pbd_0'
             }
         }
     }

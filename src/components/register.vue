@@ -15,15 +15,6 @@
                 <span class="md-error" v-else-if="!$v.form.fullName.minlength">Should be at least 3 character</span>
               </md-field>
             </div>
-          <div class="md-layout-item md-small-size-100 md-size-100">
-            <md-field :class="getValidationClass('mobile')">
-              <label for="mobile">Mobile Number</label>
-              <md-input type="tel" id="mobile" name="mobile" autocomplete="tel" v-model="form.mobile" :disabled="sending" required/>
-              <span class="md-error" v-if="!$v.form.mobile.required">The Mobile Number is required</span>
-              <span class="md-error" v-else-if="!$v.form.mobile.numeric">It must be Number</span>
-              <span class="md-error" v-else-if="!$v.form.mobile.minlength">Should be at least 8 character</span>  
-            </md-field>
-          </div>
 
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('email')">
@@ -37,7 +28,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('username')">
               <label for="username">Username</label>
-              <md-input id="username" name="username" v-model="form.username" :disabled="sending" required/>
+              <md-input id="username" name="username" v-model="form.username" autocomplete="given-name" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.username.required">The Username is required</span>
               <!--<span class="md-error" v-else-if="!$v.form.mobile.taken">The User is already taken</span>-->
             </md-field>
@@ -46,7 +37,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('password')">
               <label for="password">Password</label>
-              <md-input type="password" id="password" name="password" v-model="form.password" :disabled="sending" required/>
+              <md-input type="password" id="password" name="password" v-model="form.password" autocomplete="new-password" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
               <span class="md-error" v-else-if="!$v.form.password.minlength">Should be at least 6 character</span>  
             </md-field>
@@ -55,7 +46,7 @@
           <div class="md-layout-item md-small-size-100 md-size-100">
             <md-field :class="getValidationClass('rePassword')">
               <label for="rePassword">Password Confirmation</label>
-              <md-input type="password" name="rePassword" v-model="form.rePassword" :disabled="sending" required/>
+              <md-input type="password" name="rePassword" v-model="form.rePassword" autocomplete="new-password" :disabled="sending" required/>
               <span class="md-error" v-if="!$v.form.rePassword.required">The Password Confirmation is required</span>
               <span class="md-error" v-else-if="!$v.form.rePassword.sameAsPassword">Password is not the same</span>  
             </md-field>
@@ -86,20 +77,20 @@
     email,
     minLength,
     maxLength,
-    numeric,
+    //numeric,
     sameAs
   } from 'vuelidate/lib/validators'
   import login from '@/components/login'
+  import { cookie } from './mixins/cookie.js'
 
   export default {
     name: 'register',
-    mixins: [validationMixin],
+    mixins: [validationMixin,cookie],
     data: () => ({
       errors:'',
       showError:false,
       form: {
         fullName: null,
-        mobile: null,
         email: null,
         username: null,
         password: null,
@@ -114,11 +105,6 @@
         fullName: {
           required,
           minLength: minLength(3)
-        },
-        mobile: {
-          required,
-          minLength: minLength(8),
-          numeric
         },
         email: {
           required,
@@ -151,7 +137,6 @@
       clearForm () {
         this.$v.$reset()
         this.form.fullName = null
-        this.form.mobile = null
         this.form.email = null
         this.form.username = null
         this.form.password = null
@@ -167,7 +152,7 @@
           "password" : this.form.password,
           "email" : this.form.email,
           "full_name" : this.form.fullName,
-          "mobile" : this.form.mobile
+          "version" : "pbd_0"
         }
         console.log(userData)
         axios.post('http://civil808.com/latin/user/register2',
@@ -177,18 +162,38 @@
             'Content-type': 'application/json',
             }
           })
-          //.then(response => console.log('yeeeeeeeeh'))
           .then((data) => {
+            this.loguserin(data)
             this.lastUser = `${this.form.fullName}`
             this.userSaved = true
             this.sending = false
+            if(data.data.uid != 0){
+              this.is_login(data.data.uid)
+              axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+              {
+                headers:{
+                'Content-type': 'application/json'
+                }
+              })
+              .then((data) => {
+                if(data.data.uid != 0){
+                  this.is_login(data.data.uid)
+                  this.nav_bar(data.data.picture,data.data.username)
+                  this.$router.push('/profile/'+ data.data.uid)
+                }
+              })
+              .catch(e => {
+                console.log('errors for nav_bar_info : ' + e)
+              })
+          }
+            this.$router.push('/profile/'+ data.data.uid)
             this.clearForm()
             /* log user in by calling login component */
           })
           .catch(e => {
               this.errors = e.response.data
               this.showError = true
-              this.clearForm()
+              //this.clearForm()
           });
       },
       validateUser () {
@@ -197,6 +202,21 @@
         if (!this.$v.$invalid) {
           this.saveUser()
         }
+      },
+      loguserin(data){
+        this.is_login(data.data.uid)
+        var jsonCookie2 = data.data.token
+        //save data to cookie storage
+        this.setCookie("token", jsonCookie2 , 23)
+        this.$router.push('/profile/'+ data.data.uid)
+      },
+      is_login(uid){
+        this.$store.commit('ISLOGIN',uid);
+      }
+    },
+    mounted(){
+      if(this.getCookie("token")!= null){
+        this.$router.push('/profile/'+ this.uid)
       }
     }
   }

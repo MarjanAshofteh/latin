@@ -3,7 +3,7 @@
             <md-content class="md-elevation-1 top">
                 <div class="background-image">
                     <img v-if="user.hasOwnProperty('background_image') && !loading" v-bind:src="user.background_image" alt="background image">
-                    <img v-else src="http://civil808.com/en/staticfile/user_background2.jpg" alt="background image" style="opacity: 0.7;width: 100%;">
+                    <!--<img v-else src="http://civil808.com/en/staticfile/user_background2.jpg" alt="background image" style="opacity: 0.7;width: 100%;">-->
                 </div>
                 <div class="user-image">
                     <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name">
@@ -37,6 +37,10 @@
                             <span class="item-text">History</span>
                         </div>
                         <div class="box-text">
+                            <div v-if="user.uid">
+                                <span class="label">User Id: </span>
+                                {{user.uid}}
+                            </div>
                             <div v-if="user.name">
                                 <span class="label">Username: </span>
                                 {{user.name}}
@@ -105,51 +109,31 @@
 </template>
 <script>
 import axios from 'axios'
+import { cookie } from './mixins/cookie.js'
 
 export default {
     name:'profile',
+    mixins: [cookie],
     data(){
         return{
             errors:'',
-            cookie:'',
-            token:'',
             roles:[],
-            uid:262,
+            uid:this.$route.params.uid,
             loading: true,
-            user:{
-                /*background_image:'',
-                picture:'',
-                name:'',
-                full_name:'',
-                mail:'',
-                mobile:'',
-                about_me:'',
-                university:'',
-                education_field:'',
-                education_degree:'',
-                job:'',
-                skills:'',
-                uid:'',
-                created:'',
-                login:'',*/
-            }
+            user:{}
         }
     },
     mounted(){
+        console.log('1')
         this.getProfile()
     },
     methods:{
         getProfile(){
-            this.cookie = this.getCookie("user_cookie")
-            this.token = this.getCookie("token")
-            //console.log(this.cookie)
-            //console.log(this.token)
-            
-            axios.get('http://ali.dev.com/latin/user/'+ this.uid + '/profile?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
+            axios.get('http://civil808.com/latin/user/'+ this.uid + '/profile?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
                 {
                     headers:{
                     'Content-type': 'application/json',
-                    //'X-CSRF-Token' : this.token
+                    //'X-CSRF-Token' : this.getCookie("token")
                     //'Cookie' : this.cookie
                     }
                 })
@@ -167,17 +151,6 @@ export default {
             .catch(e => {
                 this.errors = e.response.data
             }); 
-        },
-        getCookie(name) {
-            var nameEQ = name + "="
-            var ca = document.cookie.split(';')
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i]
-                //console.log(c)
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length)
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length)
-            }
-            return null
         }
     }
 }
@@ -197,7 +170,7 @@ export default {
             width: 100%;
             height: 230px;
             overflow: hidden;
-            background-color: #b66e86;
+            background-color: #c4b6c2;
         }
         .user-image{
             position: absolute;

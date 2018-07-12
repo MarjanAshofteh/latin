@@ -24,13 +24,11 @@ header#header {
 }
 header#header .header-menu-right{
     text-align: right;
-}
-header#header .header-menu-text{
-    margin-top:3px;
+    margin-top: 4px;
 }
 header#header img.logo {
     height: 36px;
-    margin-top: 3px;
+    margin-top: 7px;
 }
 header#header a {
     text-decoration: none;
@@ -51,7 +49,7 @@ header#header span {
 }
 header#header .inner {
     text-align: left;
-    margin: 5px auto;
+    margin: 1px auto 0px auto;
     max-width: 1100px;
 }
 
