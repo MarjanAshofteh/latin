@@ -5,6 +5,7 @@ import aboutus from '@/components/aboutus'
 import register from '@/components/register'
 import login from '@/components/login'
 import profile from '@/components/profile'
+import node from '@/components/node'
 
 Vue.use(Router)
 
@@ -34,6 +35,11 @@ export default new Router({
       path: '/profile',
       name: 'profile',
       component: profile
-    }
+    },
+    {
+      path: '/node/:nid',
+      name: 'node',
+      component: node
+    },
   ]
 })
