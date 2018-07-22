@@ -86,12 +86,29 @@ export default {
         logUserIn(){
             this.sending = true
             var data = this.createPostData
-            axios.post('http://civil808.com/latin/user/login2', 
-            data,{
-                    headers: {
-                    'Content-type': 'application/json'
-                    }
-                })
+            /*const myApi = axios.create({
+                baseURL: 'http://civil808.com/latin/user/login2',
+                timeout: 10000,
+                withCredentials: true,
+                //transformRequest: [(data) => JSON.stringify(data.data)],
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                }
+            })*/
+            axios.post('http://civil808.com/latin/user/login2',
+            data,
+            {
+                headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json'
+                },
+                /*xhrFields: {
+                    withCredentials: true
+                },*/
+                withCredentials: true,
+                crossDomain: true
+            })
             .then((data) => {
                 this.token = data.data.token
                 var jsonCookie2 = this.token
