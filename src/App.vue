@@ -133,5 +133,9 @@ export default {
 }
 </script>
 
-<style src="./assets/app.css"></style>
+<style src="./assets/app.css">
+.md-menu button {
+	margin: 0;
+}
+</style>
 
