@@ -49,6 +49,8 @@ export default {
         return{
             errors:'',
             showError:false,
+            sessid:'',
+            session_name:'',
             token:'',
             form:{
                 username_email: null,
@@ -86,33 +88,21 @@ export default {
         logUserIn(){
             this.sending = true
             var data = this.createPostData
-            /*const myApi = axios.create({
-                baseURL: 'http://civil808.com/latin/user/login2',
-                timeout: 10000,
-                withCredentials: true,
-                //transformRequest: [(data) => JSON.stringify(data.data)],
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                }
-            })*/
             axios.post('http://civil808.com/latin/user/login2',
             data,
             {
                 headers: {
-                'Content-type': 'application/json',
-                'Accept': 'application/json'
-                },
-                /*xhrFields: {
-                    withCredentials: true
-                },*/
-                withCredentials: true,
-                crossDomain: true
+                'Content-type': 'application/json'
+                }
             })
             .then((data) => {
+                this.sessid = data.data.sessid
+                this.session_name = data.data.session_name
                 this.token = data.data.token
+                var jsonCookie = this.session_name + '=' + this.sessid
                 var jsonCookie2 = this.token
-                //save data to cookie storage
+                this.setCookie( this.session_name , this.sessid , 23)
+                //this.setCookie("user_cookie", jsonCookie , 23)
                 this.setCookie("token", jsonCookie2 , 23)
                 this.lastUser = `${this.form.username_email}`
                 this.userSaved = true
@@ -122,8 +112,13 @@ export default {
                     axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
                     {
                         headers:{
-                        'Content-type': 'application/json'
-                        }
+                        'Content-type': 'application/json',
+                        //'Cookie': document.cookie --> Refused to set unsafe header "Cookie"
+                        'Cookie': document.cookie,
+                        //'Cookie': 'test',
+                        },
+                        withCredentials: true,
+                        crossDomain: true
                     })
                     .then((data) => {
                         if(data.data.uid != 0){
