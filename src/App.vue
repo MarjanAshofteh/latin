@@ -34,7 +34,7 @@
               </md-button>
               
               <md-menu-content>
-                <md-menu-item @click="$router.push('/profile/'+ $store.state.uid)">My Profile</md-menu-item>
+                <md-menu-item @click="$router.push('/user/'+ $store.state.uid)">My Profile</md-menu-item>
                 <md-menu-item @click="log_user_out">log out</md-menu-item>
               </md-menu-content>
             </md-menu>

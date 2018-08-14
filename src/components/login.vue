@@ -88,7 +88,7 @@ export default {
         logUserIn(){
             this.sending = true
             var data = this.createPostData
-            axios.post('http://civil808.com/latin/user/login2',
+            axios.post('http://api.ed808.com/latin/user/login',
             data,
             {
                 headers: {
@@ -109,7 +109,7 @@ export default {
                 this.sending = false
                 if(data.data.uid != 0){
                     this.is_login(data.data.uid)
-                    axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+                    axios.get('http://api.ed808.com/latin/user/login/nav_bar_info?parameter[hash]=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
                     {
                         headers:{
                         'Content-type': 'application/json',
@@ -124,7 +124,7 @@ export default {
                         if(data.data.uid != 0){
                             this.is_login(data.data.uid)
                             this.nav_bar(data.data.picture,data.data.username)
-                            this.$router.push('/profile/'+ data.data.uid)
+                            this.$router.push('/user/'+ data.data.uid)
                         }
                     })
                     .catch(e => {
@@ -154,7 +154,7 @@ export default {
         console.log('login.vue mounted')
         if(this.getCookie("token")!= null){
             if(this.$store.state.uid != 0)
-                this.$router.push('/profile/'+ this.$store.state.uid)
+                this.$router.push('/user/'+ this.$store.state.uid)
         }
     },
     computed:{

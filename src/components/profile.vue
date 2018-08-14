@@ -7,7 +7,7 @@
                 </div>
                 <div class="user-image">
                     <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name">
-                    <img v-else src="http://civil808.com/en/staticfile/avatar.png" v-bind:alt="'image of ' + user.name">
+                    <img v-else src="http://api.ed808.com/en/staticfile/avatar.png" v-bind:alt="'image of ' + user.name">
                 </div>
                 <div class="user-tabs">
                     <md-tabs md-sync-route>
@@ -63,7 +63,7 @@
                             <span class="item-text">Bio</span>
                         </div>
                         <div class="box-text">
-                            <div v-if="user.about_me">{{user.about_me}}</div>
+                            <div v-if="user.about">{{user.about}}</div>
                         </div>
                     </md-content>
                     <md-content class="md-elevation-3 box">
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </md-content>
-                </div>  
+                </div>
             </div>
         <!--<span v-for="(role,index) in roles" :key="index">
             {{role}}
@@ -129,7 +129,7 @@ export default {
     },
     methods:{
         getProfile(){
-            axios.get('http://civil808.com/latin/user/'+ this.uid + '/profile?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
+            axios.get('http://api.ed808.com/latin/user/'+ this.uid + '/information?parameter[hash]=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
                 {
                     headers:{
                     'Content-type': 'application/json',

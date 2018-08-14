@@ -12,14 +12,18 @@
     font-style: normal;
     font-weight: 400;
     //src: url(./material.woff2) format('woff2');
-    //src: url(http://civil808.com/en/staticfile/material.woff2) format('woff2');
-    //src: url(http://ali.dev.com/en/staticfile/material.woff2) format('woff2');
     src: url(http://ed808.com/staticfile/material.woff2) format('woff2');
-  }
+}
+.md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
+.md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
+.md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after,
+.md-progress-bar.md-theme-default.md-query .md-progress-bar-fill:after {
+  background-color: #92278f !important;
+}
 
-  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
-  .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
-  .md-progress-bar.md-theme-default.md-query .md-progress-bar-track:after,
-  .md-progress-bar.md-theme-default.md-query .md-progress-bar-fill:after {
-        background-color: #92278f !important;
-    }
+@mixin main-center-content(){
+  max-width: 800px;
+  text-align: left;
+  direction: ltr;
+  margin: auto;
+}

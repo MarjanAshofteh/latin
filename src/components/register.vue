@@ -155,7 +155,7 @@
           "version" : "pbd_0"
         }
         console.log(userData)
-        axios.post('http://civil808.com/latin/user/register2',
+        axios.post('http://api.ed808.com/latin/user/register',
           userData,
           {
             headers: {
@@ -169,7 +169,7 @@
             this.sending = false
             if(data.data.uid != 0){
               this.is_login(data.data.uid)
-              axios.get('http://civil808.com/latin/user/login/nav_bar_info?hash=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60&version:pbd_0',
+              axios.get('http://api.ed808.com/latin/user/login/nav_bar_info?parameter[hash]=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
               {
                 headers:{
                 'Content-type': 'application/json'
@@ -179,14 +179,14 @@
                 if(data.data.uid != 0){
                   this.is_login(data.data.uid)
                   this.nav_bar(data.data.picture,data.data.username)
-                  this.$router.push('/profile/'+ data.data.uid)
+                  this.$router.push('/user/'+ data.data.uid)
                 }
               })
               .catch(e => {
                 console.log('errors for nav_bar_info : ' + e)
               })
           }
-            this.$router.push('/profile/'+ data.data.uid)
+            this.$router.push('/user/'+ data.data.uid)
             this.clearForm()
             /* log user in by calling login component */
           })
@@ -208,7 +208,7 @@
         var jsonCookie2 = data.data.token
         //save data to cookie storage
         this.setCookie("token", jsonCookie2 , 23)
-        this.$router.push('/profile/'+ data.data.uid)
+        this.$router.push('/user/'+ data.data.uid)
       },
       is_login(uid){
         this.$store.commit('ISLOGIN',uid);
@@ -216,7 +216,7 @@
     },
     mounted(){
       if(this.getCookie("token")!= null){
-        this.$router.push('/profile/'+ this.uid)
+        this.$router.push('/user/'+ this.uid)
       }
     }
   }

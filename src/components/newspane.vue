@@ -37,7 +37,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://civil808.com/latin/latin_news?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
+    fetch('http://api.ed808.com/latin/latin_news?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
       .then(response => response.json())
       .then((data) => {
           this.newss = data

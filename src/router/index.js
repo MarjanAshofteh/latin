@@ -10,6 +10,7 @@ import node from '@/components/node'
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -32,7 +33,7 @@ export default new Router({
       component: login
     },
     {
-      path: '/profile/:uid',
+      path: '/user/:uid',
       name: 'profile',
       component: profile
     },
