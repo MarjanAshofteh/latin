@@ -11,7 +11,31 @@ const store = new Vuex.Store({
         isLogedIn : false,
         uid:0,
         src:'',
-        username:''
+        username:'',
+
+        //allContents page
+        filtersLoading: true,
+        selected : {
+            t2258: [],
+            t2259: [],
+            t2260: [],
+            t2261: [],
+            t2262: [],
+            t2264: [],
+            t2265: [],
+            t2458: [],
+          },
+          queryNames : {
+            t2258: 'product_kind',
+            t2259: 'field',
+            t2260: 'publication_name',
+            t2261: 'exam',
+            t2262: 'education_kind',
+            t2264: 'academic_orientation',
+            t2265: 'special',
+            t2458: 'producer',
+          },
+        filters : {}
     },
     mutations:{
         SET_NEWS(state,newnid){

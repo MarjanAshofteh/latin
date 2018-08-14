@@ -11,6 +11,9 @@
             <md-menu md-direction="bottom-start">
               <router-link to="/about-us"><md-button>about us</md-button></router-link>
             </md-menu>
+            <md-menu md-direction="bottom-start">
+              <router-link to="/contents"><md-button>all contents</md-button></router-link>
+            </md-menu>
           </div>
 
           <div v-if="!$store.state.isLogedIn" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
