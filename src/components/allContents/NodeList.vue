@@ -171,15 +171,6 @@ export default {
         delete this.chips.search
       }
       
-      //handling stock
-      if(this.stock){
-        url += '&stock=1'
-        query.stock = '1'
-        this.chips['stock'] = 'نمایش موجود ها'
-      }else{
-        delete this.chips.stock
-      }
-      
       //handling pager
       if(this.page > 1){
         url += '&parameter[page]=' + (this.page - 1)

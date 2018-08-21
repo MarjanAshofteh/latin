@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-top:90px;background-color: #fafafa;">
 
     <section id="banner">
         <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->

@@ -39,7 +39,7 @@ export default {
         background-position: center;
         height: 241px;
         position: relative;
-        margin-top: 50px;
+        margin-top: 90px;
     }
     .top-pic:before {
         content: '';
