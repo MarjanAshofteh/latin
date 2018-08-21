@@ -11,6 +11,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  hash: false,
   routes: [
     {
       path: '/',
@@ -22,7 +23,7 @@ export default new Router({
       name: 'aboutus',
       component: aboutus
     },
-    {
+    /*{
       path: '/register',
       name: 'register',
       component: register
@@ -31,7 +32,7 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
-    },
+    },*/
     {
       path: '/user/:uid',
       name: 'profile',
@@ -42,5 +43,6 @@ export default new Router({
       name: 'node',
       component: node
     },
+    { path: '*', redirect: '/' }, // catch all use case
   ]
 })

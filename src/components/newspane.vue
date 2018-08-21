@@ -80,7 +80,7 @@ button.VueCarousel-navigation-button{
 }
 .newspane{
   background-color: #fafafa;
-  margin-bottom: 100px;
+  padding-bottom: 100px;
 }
 section#news{
   width: 80%;

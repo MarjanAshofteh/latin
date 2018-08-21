@@ -14,12 +14,12 @@
           </div>
 
           <div v-if="!$store.state.isLogedIn" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
-            <md-menu md-direction="bottom-start">
+            <!--<md-menu md-direction="bottom-start">
               <router-link to="/login"><md-button>login</md-button></router-link>
             </md-menu>
             <md-menu md-direction="bottom-start">
               <router-link to="/register"><md-button>register</md-button></router-link>
-            </md-menu>
+            </md-menu>-->
           </div>
           <div v-else class="header-menu-right md-layout-item md-size-30 md-xsmall-size-100"> 
             <md-menu md-size="small"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
