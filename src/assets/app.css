@@ -22,6 +22,9 @@ header#header {
     left: 0;
     position: absolute;
 }
+header#header + div {
+	margin-top: 50px;
+}
 header#header .header-menu-right{
     text-align: right;
     margin-top: 4px;

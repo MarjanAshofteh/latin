@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div style="padding-top: 15px;">
     <div class="md-layout" style="align-items: flex-start; padding: 0 0 30px 15px;">
         <filters class="md-layout-item md-size-20" style="padding: 0 15px;"/>
-        <contents class="md-card md-theme-default md-layout-item md-size-80"/>
+        <NodeList class="md-card md-theme-default md-layout-item md-size-80"/>
     </div>
 
   </div>
@@ -10,14 +10,13 @@
 
 <script>
 import axios from 'axios'
-import contents from '@/components/allContents/contentsList'
+import NodeList from '@/components/allContents/NodeList'
 import filters from '@/components/allContents/filters'
 
 export default {
-  name: 'home',
-  props: ['name'],
+  name: 'allContents',
   components: {
-    contents,
+    NodeList,
     filters
   },
 }

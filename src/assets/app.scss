@@ -12,7 +12,7 @@
     font-style: normal;
     font-weight: 400;
     //src: url(./material.woff2) format('woff2');
-    src: url(http://ed808.com/staticfile/material.woff2) format('woff2');
+    src: url(./material.woff2) format('woff2');
 }
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
@@ -26,4 +26,9 @@
   text-align: left;
   direction: ltr;
   margin: auto;
+}
+:root{
+  --md-theme-default-primary : #92278f;
+  --md-theme-default-accent : #ba68c8;
+  --md-theme-default-scrollbar-on-background-variant: #aaa;
 }

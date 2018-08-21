@@ -16,16 +16,11 @@ const store = new Vuex.Store({
         //allContents page
         filtersLoading: true,
         selected : {
-            t2258: [],
-            t2259: [],
-            t2260: [],
-            t2261: [],
-            t2262: [],
-            t2264: [],
-            t2265: [],
-            t2458: [],
-          },
-          queryNames : {
+            type: [],
+            category: [],
+            topic: [],
+        },
+        queryNames : {
             t2258: 'product_kind',
             t2259: 'field',
             t2260: 'publication_name',
@@ -34,7 +29,7 @@ const store = new Vuex.Store({
             t2264: 'academic_orientation',
             t2265: 'special',
             t2458: 'producer',
-          },
+        },
         filters : {}
     },
     mutations:{
@@ -56,11 +51,14 @@ const store = new Vuex.Store({
         NAV_BAR(state,src,username){
             state.src = src
             state.username = username
-        }
+        },
+        SET_FILTERS(state, filters){
+            state.filters = filters
+        },
     },
     getters:{
-        //evenOrOdd: state => state.count % 2 === 0 ? 'even' : 'odd'
-        getMynid: state => state.newsnid
+        getMynid: state => state.newsnid,
+        getFilters: state => state.selected,
     },
     actions:{
 

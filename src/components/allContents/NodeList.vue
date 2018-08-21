@@ -1,32 +1,26 @@
 <template>
-    <div class="products md-elevation-1" style="padding: 0 15px;">
+    <div class="contents md-elevation-1" style="padding: 0 15px;">
       <div 
         class="md-layout" 
         style="flex: 1 1 100%;	align-items: center;">
         <span 
           class="md-layout-item" 
-          style="flex: 0 20%;	text-align: left;	order: 1;	font-size: 13px;" 
+          style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 13px;" 
           v-if="count > 0">
           {{pager_count}}
           <md-icon style="margin-right: 8px;font-size: 20px !important;">widgets</md-icon>
           </span>
         <md-field 
           class="md-layout-item" 
+          style="max-width: 500px;"
           md-clearable 
           md-layout="box">
-          <label>جستجو</label>
+          <label>Search</label>
           <md-input class="reset-input"
             v-model.lazy="searchInput" 
-            @keyup.native.enter="getProducts()"></md-input>
+            @keyup.native.enter="getContents()"></md-input>
           <md-icon>search</md-icon>
         </md-field>
-        <md-switch 
-          @change="getProducts()" 
-          v-model="stock"
-          class="md-layout-item" 
-          style="align-items: center;font-weight: 500;margin-right: 45px;" >
-          نمایش موجودها: 
-        </md-switch>
       </div>
 
       <div v-show="Object.keys(chips).length > 0" class="chips-container">
@@ -45,12 +39,12 @@
       <md-empty-state v-if="count < 1" style="	margin: 30px auto;"
         md-rounded
         md-icon="search"
-        md-label="موردی یافت نشد"
-        md-description="فیلتر های خود را تغییر دهید تا نتایج بیشتری مشاهده کنید.">
+        md-label="No item found"
+        md-description="Change your filters to search for other items.">
       </md-empty-state>
 
       <div class="md-layout" style="position: relative;	margin: 0 -1%;">
-        <div class="loading" v-if="$store.state.loading">
+        <div class="loading" v-if="loading">
           <md-progress-spinner 
             :md-diameter="100" 
             :md-stroke="5" 
@@ -59,46 +53,45 @@
           </md-progress-spinner>
         </div>
 
-        <ProductTeaser v-for="product in products" :key="product.nid"
-        :title="product.title" 
-        :pic="product.picture" 
-        :nid="product.nid"
-        :status="product.status"
-        :listPrice="product.list_price"
-        :sellPrice="product.price"/>
+        <NodeTeaser v-for="content in contents" :key="content.nid"
+        :title="content.title" 
+        :pic="content.picture"
+        :nid="content.nid"
+        :date="content.created"
+        :type="content.types"/>
       </div>
       
       <div class="pager-container">
-        <md-button class="md-icon-button" @click="set_pager('first')" v-if="pager.length > 1 && page > 1"><md-icon>last_page</md-icon></md-button>
-        <md-button class="md-icon-button" @click="set_pager('prev')"  v-if="pager.length > 1 && page > 1"><md-icon>chevron_right</md-icon></md-button>
+        <md-button class="md-icon-button" @click="set_pager('first')" v-if="pager.length > 1 && page > 1"><md-icon>first_page</md-icon></md-button>
+        <md-button class="md-icon-button" @click="set_pager('prev')"  v-if="pager.length > 1 && page > 1"><md-icon>chevron_left</md-icon></md-button>
         <md-button class="md-icon-button" v-for="i in pager" :key="i" 
         v-if="(page > 5 && i < page + 5 && i > page - 5) || (page < 5 && i < 9)" 
         :class="pager_classes(i)"
         @click="set_pager(i)">
           {{i}}
         </md-button>
-        <md-button class="md-icon-button" @click="set_pager('next')" v-if="pager.length > 1 && page < pager.length"><md-icon>chevron_left</md-icon></md-button>
-        <md-button class="md-icon-button" @click="set_pager('last')" v-if="pager.length > 1 && page < pager.length"><md-icon>first_page</md-icon></md-button>
+        <md-button class="md-icon-button" @click="set_pager('next')" v-if="pager.length > 1 && page < pager.length"><md-icon>chevron_right</md-icon></md-button>
+        <md-button class="md-icon-button" @click="set_pager('last')" v-if="pager.length > 1 && page < pager.length"><md-icon>last_page</md-icon></md-button>
       </div>
     </div>
 </template>
 
 <script>
-import ProductTeaser from '@/components/allContents/ProductTeaser'
+import NodeTeaser from '@/components/allContents/NodeTeaser'
 import Vue from 'vue';
-import { switchCase } from 'babel-types';
 
 export default {
-  name: 'contentsList',
+  name: 'NodeList',
   data () {
     return {
-      products:[],
+      contents:[],
       searchInput:'',
       stock: false,
       count: 0,
       chips: {},
       page: 1,
       pager: [],
+      loading: true,
     }
   },
   mounted() {
@@ -125,12 +118,12 @@ export default {
           break
       }
     })
-    //after handling url queries its time to filter products
-    this.getProducts()
+    //after handling url queries its time to filter contents
+    this.getContents()
     
     this.$store.watch(
       (state) => {return state.selected}, 
-      () => { this.getProducts()}, 
+      () => { this.getContents()}, 
       { deep: true} 
     )
     this.$store.watch(
@@ -140,7 +133,7 @@ export default {
     )
   },
   methods:{
-    getProducts(){
+    getContents(){
       this.set_loading()
       var selected = this.$store.state.selected
       var names = this.$store.state.queryNames
@@ -162,8 +155,8 @@ export default {
             chipps[tid] = filters[tid]
           })
 
-          url += ((!first_query)? "&" : "") + names[Key] + "=" + selectedTid
-          query[names[Key]] = selectedTid
+          url += ((!first_query)? "&" : "") + "parameter[" + Key + "]=" + selectedTid
+          query[Key] = selectedTid
           first_query = false
         }
       });
@@ -171,7 +164,7 @@ export default {
       
       //handling search
       if(this.searchInput != ''){
-        url += '&search=' + this.searchInput
+        url += '&parameter[search]=' + this.searchInput
         query.search = this.searchInput        
         this.chips['search'] = this.searchInput
       }else{
@@ -189,41 +182,41 @@ export default {
       
       //handling pager
       if(this.page > 1){
-        url += '&page=' + (this.page - 1)
+        url += '&parameter[page]=' + (this.page - 1)
         query.page = this.page
       }
 
       //submitting changes
-      this.$router.replace({ name: "home", query : query })
-      fetch('http://civil808.com/shop/product/json?'+ url)
+      //this.$router.replace({ name: "home", query : query })
+      fetch('http://api.ed808.com/latin/latin_contents?'+ url)
         .then(response => response.json())
         .then((data) => {
-          //set page in url query to the last possible page if it is bigger than product count
+          //set page in url query to the last possible page if it is bigger than content count
           if(Math.ceil(data.count / 30) < this.page && this.page > 1){
             this.page = Math.ceil(data.count / 30)
             this.page = this.page == 0 ? 1 : this.page
-            this.getProducts()
+            this.getContents()
           }
 
-          this.products = data.products
+          this.contents = data.contents
           this.count = data.count
           this.update_pager()
-          setTimeout(() => {this.$store.commit('CLEAR_LOADING','loading')}, 300)
+          setTimeout(() => {this.loading = false}, 300)
         })
     },
     set_loading(){
-      this.$store.commit('SET_LOADING', 'loading');
+      this.loading = true
     },
     chips_delete(i){//callback for delete button in chips
       delete this.chips[i]
       switch(i){
         case 'stock':
           this.stock = false
-          this.getProducts()
+          this.getContents()
         break
         case 'search':
           this.searchInput = ''
-          this.getProducts()
+          this.getContents()
         break
         default:
           var obj = this.$store.state.selected
@@ -275,24 +268,24 @@ export default {
           this.page = i
           break
       }
-      this.getProducts()
+      this.getContents()
     },
   },
   components: {
-    ProductTeaser
+    NodeTeaser
   },
   computed: {
     pager_count: function(){
       var start = (this.page - 1) * 30 + 1
       var till = (this.count - start > 29)? start + 29 : this.count
-      return 'نمایش ' + start +' - '+ till + ' از '+ this.count +' محصول' 
+      return 'Showing ' + start +' - '+ till + ' From '+ this.count +' Contents'
     },
-  }
+  },
 }
 </script>
 
 <style lang="scss">
-.md-layout-item.products{
+.md-layout-item.contents{
     @media (max-width: 1280px) {
     min-width: 75%;
 	  max-width: 75%;
@@ -313,8 +306,6 @@ export default {
   margin-bottom: 40px;
 }
 div.md-field .md-input-action {
-  left: 0;
-	right: inherit;
 	background: #fff;
 	z-index: 6;
 	height: 30px;
@@ -324,7 +315,7 @@ div.md-field .md-input-action {
 	color: #333 !important;
 }
 .chips-container {
-  text-align: right;
+  text-align: left;
   margin-bottom: 15px;
   .md-chip {
     font-size: 11px;

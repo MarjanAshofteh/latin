@@ -12,6 +12,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
+  hash: 'false',
   routes: [
     {
       path: '/',
@@ -35,8 +36,9 @@ export default new Router({
     },
     {
       path: '/contents',
-      name: 'all contents',
-      component: allContents
+      name: 'allContents',
+      component: allContents,
+      props: (e) => ({ name: e.query.name })
     },
     {
       path: '/user/:uid',
@@ -48,5 +50,6 @@ export default new Router({
       name: 'node',
       component: node
     },
+    { path: '*', redirect: '/' }, // catch all use case
   ]
 })
