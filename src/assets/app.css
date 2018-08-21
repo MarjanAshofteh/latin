@@ -24,7 +24,7 @@ header#header {
   position: absolute;
 }
 header#header + div {
-	margin-top: 50px;
+	margin-top: 90px;
 }
 header#header .header-menu-right{
     text-align: right;
