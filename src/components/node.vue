@@ -27,7 +27,7 @@
     <md-content class="node_body">
       <embedVideo v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
         :url="node_content.video_link"/>
-      <img v-if="node_content.hasOwnProperty('image') && (node_content.image != null)" style="margin: 60px 0 0 0; max-width: 900px;" :src="node_content.image | createlink" :alt="node_content.title">
+      <img v-if="node_content.hasOwnProperty('image') && (node_content.image != null)" style="margin: 25px 0 0 0; max-width: 900px;" :src="node_content.image | createlink" :alt="node_content.title">
       <article v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)" v-html="node_content.body_value"></article>
       <div 
         v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)" class="reference" 
@@ -186,6 +186,12 @@ export default {
       margin: 6px 8px 6px 0px !important;
     }
   }
+  .node_body:before {
+    content: "";
+    display: table;
+    width: 0;
+    height: 0;
+  }
   .main-container .loading {
     position: absolute;
     width: 100%;
@@ -224,13 +230,11 @@ export default {
     .top_header{
       height: 300px !important;
       justify-content: center;
-    }
-    .node_body{
-      margin-top: 110px;
+      margin-bottom: 110px; 
     }
   }
   .node_type_video{
-    > img{
+    .node_body > img{
       display: none;
     }
   }

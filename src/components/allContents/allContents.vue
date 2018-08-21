@@ -27,5 +27,8 @@ export default {
         max-width: 1100px;
         margin: auto;
     }
+    header#header{
+      box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
+    }
 </style>
 

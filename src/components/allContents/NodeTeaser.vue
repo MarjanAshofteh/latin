@@ -1,6 +1,6 @@
 <template>
-    <md-card class="content-teaser" :class="[('content-'+ nid)]" md-with-hover 
-        @click.native="_go(nid)">
+    <a class="content-teaser" :class="[('content-'+ nid)]" :href="'/node/' + nid" target="_blank">
+    <md-card md-with-hover>
       <md-ripple>  
         <md-card-media md-ratio="16:9">
           <img v-bind:src="pic | converturl" />
@@ -18,6 +18,7 @@
         </md-card-header>
       </md-ripple>  
     </md-card>
+    </a>
 </template>
 
 <script>
@@ -26,11 +27,6 @@ import news from '@/components/news'
 export default {
     name: 'NodeTeaser',
     props: ['title','pic','date','nid','type'],
-    methods:{
-        _go(nid){
-          window.location.href = "/node/"+ nid
-        },
-    },
     components: {
         news
     },
@@ -101,7 +97,8 @@ export default {
 	-webkit-box-flex: 0;
 	-ms-flex: 0 1 23%;
 	flex: 0 1 23%;
-	max-height: 370px;
+    max-height: 370px;
+    text-decoration: none !important;
     @media (max-width: 1280px){
     	width: 31.3%;
 	    -ms-flex: 0 1 31.3%;
