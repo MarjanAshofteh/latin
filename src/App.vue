@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="[queryClasses]">
     <header id="header">
       <div class="inner md-layout">
         <img src="http://civil808.com/en/staticfile/logo.png" class="logo">
@@ -62,11 +62,11 @@ export default {
     return{
       userlogout:false,
       menu_flag:false,
-      api_complete: false
+      api_complete: false,
+      queryClasses: ''
     }
   },
   mounted(){
-    console.log('app.vue beforeCreate')
     if(this.getCookie("token") == null){
       //in this way, user is not log in
       console.log('token is unset')
@@ -92,6 +92,11 @@ export default {
         console.log('errors for nav_bar_info : ' + e)
       })
     }
+    var query = this.$router.currentRoute.path.split('/')
+    query.forEach(element => {
+      if(element != '')
+        this.queryClasses += ' page-' + element
+    });
   },
   methods:{
     opening_menu(){
@@ -136,9 +141,16 @@ export default {
 }
 </script>
 
-<style src="./assets/app.css">
+<style src="./assets/app.css" lang="scss">
 .md-menu button {
 	margin: 0;
+}
+.page-contents header#header{
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
+  .inner {
+    max-width: none;
+    padding: 0 15px;
+  }
 }
 </style>
 

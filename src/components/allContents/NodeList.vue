@@ -14,6 +14,7 @@
           class="md-layout-item" 
           style="max-width: 500px;"
           md-clearable 
+          @md-clear="getContents()"
           md-layout="box">
           <label>Search</label>
           <md-input class="reset-input"
@@ -97,11 +98,6 @@ export default {
   mounted() {
     var query = this.$route.query
     var selected = this.$store.state.selected
-    var names = this.$store.state.queryNames
-    var ids = {}
-    Object.keys(names).map((key)=>{ //translating query names to tids
-      ids[names[key]] = key
-    })
     Object.keys(query).map((key)=>{
       switch(key){
         case 'search': 
@@ -114,7 +110,7 @@ export default {
           this.page = query[key]
           break
         default : 
-          selected[ids[key]] = query[key].split(",")
+          selected[key] = query[key].split(",")
           break
       }
     })
@@ -136,7 +132,6 @@ export default {
     getContents(){
       this.set_loading()
       var selected = this.$store.state.selected
-      var names = this.$store.state.queryNames
       var filters = this.$store.state.filters
       var url = ""
       var query = {}
@@ -178,7 +173,7 @@ export default {
       }
 
       //submitting changes
-      //this.$router.replace({ name: "home", query : query })
+      this.$router.replace({ name: "allContents", query : query })
       fetch('http://api.ed808.com/latin/latin_contents?'+ url)
         .then(response => response.json())
         .then((data) => {

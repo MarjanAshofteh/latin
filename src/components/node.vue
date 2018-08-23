@@ -28,7 +28,7 @@
       <embedVideo v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
         :url="node_content.video_link"/>
       <img v-if="node_content.hasOwnProperty('image') && (node_content.image != null)" style="margin: 25px 0 0 0; max-width: 900px;" :src="node_content.image | createlink" :alt="node_content.title">
-      <article v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)" v-html="node_content.body_value"></article>
+      <article v-if="node_content.hasOwnProperty('body_value') && (node_content.body_value != null)" v-html="convertDomain(node_content.body_value)"></article>
       <div 
         v-if="node_content.hasOwnProperty('references') && (node_content.references.length != 0)" class="reference" 
         v-for="(reference , index) in node_content.references" :key="index">
@@ -115,13 +115,20 @@ export default {
             this.types.push('video')
         });
       }
+    },
+    convertDomain(value){
+      return value.replace('ed808.com', 'api.ed808.com').replace('="/sites', '="http://api.ed808.com/sites')
     }
   },
   filters: {
     createlink: function (value) {
         if (!value) return ''
         return "http://api.ed808.com/sites/default/files/" + value.substring(9)
-    }
+    },
+    convertDomain: function(value){
+      // if (!value) return ''
+      return value.replace('ed808.com', 'api.ed808.com').replace('="/sites', '="http://api.ed808.com/sites')
+    },
   }
 }
 </script>

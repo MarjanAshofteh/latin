@@ -23,26 +23,9 @@ export default {
 </script>
 
 <style lang="scss">
-<<<<<<< HEAD
 .inner{
   max-width: 1100px;
   margin: auto;
 }
-header#header{
-  box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
-  .inner {
-    max-width: none;
-    padding: 0 15px;
-  }
-}
-=======
-    .inner{
-        max-width: 1100px;
-        margin: auto;
-    }
-    header#header{
-      box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
-    }
->>>>>>> 728118bb9497a54270df9fbe4c2f123f15d9608a
 </style>
 
