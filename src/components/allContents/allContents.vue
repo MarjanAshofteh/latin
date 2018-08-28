@@ -23,9 +23,6 @@ export default {
 </script>
 
 <style lang="scss">
-.inner{
-  max-width: 1100px;
-  margin: auto;
-}
+
 </style>
 

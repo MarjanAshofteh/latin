@@ -32,3 +32,46 @@
   --md-theme-default-accent : #ba68c8;
   --md-theme-default-scrollbar-on-background-variant: #aaa;
 }
+header#header{
+  box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
+  background: #fff;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  height: 90px;
+  left: 0;
+  position: absolute;
+  .inner {
+    max-width: none;
+    padding: 0 15px;
+    text-align: left;
+    height: 100%;
+    align-items: center;
+  }
+  + div {
+    margin-top: 90px;
+  }
+  .header-menu-right{
+    text-align: right;
+    margin-top: 4px;
+  }
+  img.logo {
+    height: 36px;
+    @media all and (max-width: 600px){
+      position: absolute;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  p {
+    margin: 0;
+    font-weight: bold;
+    font-size: 18px;
+  }
+  span {
+    font-size: 14px;
+    font-weight: unset;
+  }
+}

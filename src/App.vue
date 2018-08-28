@@ -145,12 +145,5 @@ export default {
 .md-menu button {
 	margin: 0;
 }
-.page-contents header#header{
-  box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;
-  .inner {
-    max-width: none;
-    padding: 0 15px;
-  }
-}
 </style>
 
