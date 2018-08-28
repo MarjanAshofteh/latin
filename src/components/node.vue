@@ -25,8 +25,12 @@
       />
     </div>
     <md-content class="node_body">
-      <div v-if="types.includes('podcast')" id="audio-demos-vuejs">
-        <wavesurferPlayer layout="modal"></wavesurferPlayer>
+      <div v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
+        <wavesurferPlayer 
+          layout="modal"
+          :src="node_content.files[0] | createlink"
+          >
+        </wavesurferPlayer>
       </div>
       <embedVideo v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
         :url="node_content.video_link"/>
@@ -127,8 +131,8 @@ export default {
   },
   filters: {
     createlink: function (value) {
-        if (!value) return ''
-        return "http://api.ed808.com/sites/default/files/" + value.substring(9)
+      if (!value) return ''
+      return "http://api.ed808.com/sites/default/files/" + value.substring(9)
     },
     convertDomain: function(value){
       // if (!value) return ''
@@ -251,7 +255,13 @@ export default {
     }
   }
   #audio-demos-vuejs{
-    margin: 30px auto;
-    padding: 0 30px;
+    margin: 45px auto 30px auto;
+    padding: 0 10%;
+    > div{
+      /*box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);*/
+      padding: 20px 15px;
+      border: 1px solid #eee;
+      border-radius: 20px;
+    }
   }
 </style>

@@ -6,7 +6,7 @@
         <div>
             <h1>Educational and Engineering institute 808</h1>
             <span>specialized training in Civil and Architecture
-                <span>civil808.com</span>
+                <span>Ed808.com</span>
             </span>
         </div>
     </section>
