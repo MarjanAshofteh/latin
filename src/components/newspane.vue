@@ -3,6 +3,7 @@
       <section id="news">
       <div class="md-headline">
         <h5>Upcoming Civil Engineering Events</h5>
+        <div class="more-link"><router-link tag="md-button" to="/contents?type=4058">See All</router-link></div>
       </div>
       <carousel 
         :per-page="4" 
@@ -91,7 +92,7 @@ section#news{
 }
 .md-headline{
 	padding: 35px 0;
-	margin: 0;
+	margin: 0 !important;
 	position: relative;
   text-align: left;
   &:before {
@@ -112,7 +113,17 @@ section#news{
     padding-right: 15px;
   }
 }
-
+.more-link {
+	background: #fafafa;
+	z-index: 1;
+	position: relative;
+  float: right;
+  button {
+    margin: 0px 10px 0 10px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+  }
+}
 </style>
 
 

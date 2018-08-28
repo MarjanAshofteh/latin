@@ -48,6 +48,19 @@
     </header>
     <router-view v-if="api_complete"/>
     <md-snackbar :md-active.sync="userlogout">You log out successfully!</md-snackbar>
+
+    <section id="subscribe">
+      <div class="inner">
+        <h2>Subscribe Your Email</h2>
+        <div class="input-wrapper">
+          <input @keyup.enter="addEmail" v-model="inputBox" placeholder="Submit Your Email..."  autocomplete="off"/>
+          <button v-on:click="addEmail"></button>
+          <div style="margin-top: 20px;" v-if="aftersubmit" >Thank You :)</div>
+        </div>
+        <p> Join our mailing list to receive the latest updates and personalized content right in your inbox </p>
+      </div>
+    </section>
+
   </div>
 </template>
 
@@ -63,7 +76,9 @@ export default {
       userlogout:false,
       menu_flag:false,
       api_complete: false,
-      queryClasses: ''
+      queryClasses: '',
+      inputBox:'',
+      aftersubmit:false,
     }
   },
   mounted(){
@@ -137,6 +152,20 @@ export default {
     loged_out(){
       this.$store.commit('LOGEDOUT');
     },
+    addEmail() {
+      var config = {
+        headers:{
+          'Content-Type': 'application/json',
+          'crossDomain': true
+        },
+        baseURL: 'http://civil808.com'
+      }
+      var geturl = '/latin/pbd?email="' + this.inputBox + '"' 
+      axios.get( geturl , config)
+      .then((response) => {
+      })
+      this.aftersubmit = true;
+    }    
   }
 }
 </script>
@@ -146,4 +175,51 @@ export default {
 	margin: 0;
 }
 </style>
-
+<style lang="scss">
+    section#subscribe{
+        background: #5a5f64;
+        padding: 10px 0 30px 0;
+        color: #fff;
+        .input-wrapper{
+            position: relative;
+            width: 400px;
+            margin: auto;
+            @media all and (max-width: 700px){
+                width: 300px;
+            }
+        }
+        input{
+            width: 400px;
+            box-sizing: border-box;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+            border-radius: 30px;
+            height: 50px;
+            -webkit-appearance: button-bevel;
+            padding: 0 17px;
+            font-size: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            outline: none;
+            @media all and (max-width: 700px){
+                width: 300px;
+            }
+        }
+        button{
+            position: absolute;
+            height: 44px;
+            right: -1px;
+            top: -2px;
+            width: 45px;
+            border-radius: 50%;
+            -webkit-appearance: button-bevel;
+            margin: 5px;
+            cursor: pointer;
+            background-color: #BA68C8;
+            &:before {
+                content: '+';
+                font-size: 28px;
+                color: #ffffff;
+            }
+        }
+    }
+</style>

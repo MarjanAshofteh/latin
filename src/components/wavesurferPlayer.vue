@@ -1,6 +1,5 @@
 <template>
   <div>
-    
     <div class="player-template-rootnode">
       <div class="meta-artist">
           <span class="the-artist"></span>
@@ -10,24 +9,16 @@
       <div id="waveform"></div>
 
       <div class="controls">
-          <div class="play-pause-btn play" v-if="layout == 'modal'"  v-on:click="togglePlayPause($event)">
-            <md-icon v-if="currentlyplay" class="md-size-2x">pause_circle_outline</md-icon>
-            <md-icon v-else class="md-size-2x" aria-hidden="true">play_circle_outline</md-icon>
-          </div>
-          <!--<div class="btn-prev" v-on:click="playPrev()">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                <i class="fa fa-backward" aria-hidden="true"></i>
-              </span>
-          </div>
-          <div class="btn-next" v-on:click="playNext()">
-              <span class="fa-stack fa-lg">
-                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                <i class="fa fa-forward" aria-hidden="true"></i>
-              </span>
-          </div>-->
+        <div class="download_btn">
+          <a :href="src" target="_self" download="mp3file">
+            <md-icon>cloud_download</md-icon>
+          </a>
+        </div>
+        <div class="play-pause-btn play" v-if="layout == 'modal'"  v-on:click="togglePlayPause($event)">
+          <md-icon v-if="currentlyplay" class="md-size-2x md-primary">pause_circle_filled</md-icon>
+          <md-icon v-else class="md-size-2x md-primary" aria-hidden="true">play_circle_filled</md-icon>
+        </div>
       </div>
-
       <!--<div class="playlist" v-for="(source , index) in sources" :key="index">
           <div class="demo-song" v-bind:class="{active: source.isActive}">
               <div class="demo-title"><b>{{source.title}}</b></div>
@@ -44,7 +35,7 @@
 <script>
 export default {
   name:'wavesurferPlayer',
-  props: ['layout'],
+  props: ['layout','src'],
   data(){
     return {
       sources : [
@@ -52,6 +43,7 @@ export default {
           name: "Sample_Magic",
           title: "Prophet",
           //src: require('../assets/audio.ogg'),
+          src: this.src,
           isActive: true
         }
       ],
@@ -165,43 +157,61 @@ export default {
 </script>
 
 <style lang="scss">
+
 .fa-circle-thin:before {
-    content: "\f1db";
+  content: "\f1db";
 }
-
 .btn-prev, .btn-next, .play-pause-btn {
-    display: inline-block;
+  display: inline-block;
 }
-
 .fa-backward{
-    margin-left: 0.4em;
-    margin-top: 0.1em;
+  margin-left: 0.4em;
+  margin-top: 0.1em;
 }
-
 .fa-forward{
-    margin-left: 0.6em;
-    margin-top: 0.1em;
+  margin-left: 0.6em;
+  margin-top: 0.1em;
 }
-
 .fa-play{
-    margin-left: 0.7em;
-    margin-top: 0.1em;
+  margin-left: 0.7em;
+  margin-top: 0.1em;
 }
-
 .playlist{
-
-    .demo-song{
-
-        background-color: #444444;
-        color: #fff;
-        padding:1em;
-    }
-    .demo-song.active{
-        background-color: #222222;
-    }
+  .demo-song{
+    background-color: #444444;
+    color: #fff;
+    padding:1em;
+  }
+  .demo-song.active{
+    background-color: #222222;
+  }
 }
 canvas {
-    max-width: initial !important;
+  max-width: initial !important;
+}
+
+.controls{
+  border-top: 1px solid #eee;
+  padding: 20px 0 0 0;
+  margin: 15px auto 0 auto;
+  justify-content: center;
+  .download_btn{
+    float: left;
+    margin: 8px 0 0 9px;
+    i{
+      width: 30px;
+      max-width: 30px;
+      font-size: 30px !important;
+      height: 30px;
+    }
+  }
+  div{
+    margin: 0 10px;
+    cursor: pointer;
+    a{
+      text-decoration: none !important;
+    }
+  }
 }
 
 </style>

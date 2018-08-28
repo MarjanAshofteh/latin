@@ -6,25 +6,13 @@
         <div>
             <h1>Educational and Engineering institute 808</h1>
             <span>specialized training in Civil and Architecture
-                <span>ed808.com</span>
+                <span>Ed808.com</span>
             </span>
         </div>
     </section>
 
     <newspane/>
 
-    <section id="subscribe">
-      <div class="inner">
-        <h2>Subscribe Your Email</h2>
-        <div class="input-wrapper">
-          <input @keyup.enter="addEmail" v-model="inputBox" placeholder="Submit Your Email..."  autocomplete="off"/>
-          <button v-on:click="addEmail"></button>
-          <div style="margin-top: 20px;" v-if="aftersubmit" >Thank You :)</div>
-        </div>
-        <p> Join our mailing list to receive the latest updates and personalized content right in your inbox </p>
-      </div>
-    </section>
-    
   </div>
 </template>
 
@@ -34,30 +22,6 @@ import newspane from '@/components/newspane'
 
 export default {
   name: 'home',
-  data () {
-    return {
-      inputBox:'',
-      aftersubmit:false,
-    }
-  },
-  methods: {
-    addEmail() {
-      var config = {
-        headers:{
-          'Content-Type': 'application/json',
-          'crossDomain': true
-        },
-        baseURL: 'http://civil808.com'
-      }
-      var geturl = '/latin/pbd?email="' + this.inputBox + '"' 
-      axios.get( geturl , config)
-      .then((response) => {
-      })
-
-      this.aftersubmit = true;
-      
-    }
-  },
   components: {
     newspane
   }
@@ -132,56 +96,6 @@ export default {
                 }
             }
         }
-    }
-    section#subscribe{
-        background: #5a5f64;
-        padding: 10px 0 30px 0;
-        color: #fff;
-        .input-wrapper{
-            position: relative;
-            width: 400px;
-            margin: auto;
-            @media all and (max-width: 700px){
-                width: 300px;
-            }
-        }
-        input{
-            width: 400px;
-            box-sizing: border-box;
-            -webkit-transition: width 0.4s ease-in-out;
-            transition: width 0.4s ease-in-out;
-            border-radius: 30px;
-            height: 50px;
-            -webkit-appearance: button-bevel;
-            padding: 0 17px;
-            font-size: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            outline: none;
-            @media all and (max-width: 700px){
-                width: 300px;
-            }
-        }
-        button{
-            position: absolute;
-            height: 44px;
-            right: -1px;
-            top: -2px;
-            width: 45px;
-            border-radius: 50%;
-            -webkit-appearance: button-bevel;
-            margin: 5px;
-            cursor: pointer;
-            background-color: #BA68C8;
-            &:before {
-                content: '+';
-                font-size: 28px;
-                color: #ffffff;
-            }
-        }
-    }
-    .inner{
-        max-width: 1100px;
-        margin: auto;
     }
     .page-iframe .mejs-container{
         padding-bottom: 53% !important;

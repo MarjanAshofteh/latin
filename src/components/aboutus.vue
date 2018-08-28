@@ -31,7 +31,7 @@ export default {
         font-size: 35px;
     }
     .inner{
-        padding: 0 20px;
+        padding: 0 36px;
     }
     .top-pic{
         background-image: url(http://civil808.com/en/staticfile/conf.jpg);

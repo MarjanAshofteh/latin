@@ -11,9 +11,12 @@
       <h1 v-if="node_content.hasOwnProperty('title')">{{node_content.title}}</h1>
       <div class="date_and_category" v-if="!types.includes('event')">
         <span v-if="node_content.hasOwnProperty('created')">{{node_content.created}}</span>
-        <a v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)" :href="'http://ed808.com/tag/'+ node_content.topic[0].tid" target="_blank" :title="node_content.topic[0].name">
-        {{node_content.topic[0].name}}
-        </a>
+        
+        <router-link v-if="node_content.hasOwnProperty('topic') && (node_content.topic.length != 0)" 
+          :to="'/contents?topic='+ node_content.topic[0].tid" 
+          target="_blank" :title="node_content.topic[0].name">
+          {{node_content.topic[0].name}}
+        </router-link>
       </div>
       <eventData v-if="types.includes('event')"
         :date="node_content.event_time"
@@ -25,9 +28,13 @@
       />
     </div>
     <md-content class="node_body">
-      <div v-if="types.includes('podcast')" id="audio-demos-vuejs">
-        <wavesurferPlayer layout="modal"></wavesurferPlayer>
-      </div>
+      <!--<div v-if="types.includes('podcast') && node_content.hasOwnProperty('files') && (node_content.files.length != 0)" id="audio-demos-vuejs">
+        <wavesurferPlayer 
+          layout="modal"
+          :src="node_content.files[0] | createlink"
+          >
+        </wavesurferPlayer>
+      </div>-->
       <embedVideo v-if="types.includes('video') && node_content.hasOwnProperty('video_link') && (node_content.video_link != null)"
         :url="node_content.video_link"/>
       <img v-if="node_content.hasOwnProperty('image') && (node_content.image != null)" style="margin: 25px 0 0 0; max-width: 900px;" :src="node_content.image | createlink" :alt="node_content.title">
@@ -58,7 +65,7 @@ import eventData from '@/components/eventData'
 import author from '@/components/author'
 import tag from '@/components/tag'
 import embedVideo from '@/components/embedVideo'
-import wavesurferPlayer from '@/components/wavesurferPlayer'
+//import wavesurferPlayer from '@/components/wavesurferPlayer'
 import axios from 'axios'
 export default {
   name: 'node',
@@ -78,7 +85,7 @@ export default {
     author,
     tag,
     embedVideo,
-    wavesurferPlayer
+    //wavesurferPlayer
   },
   mounted(){
     axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
@@ -106,14 +113,10 @@ export default {
   methods:{
     type(){
       this.types = []
-      if(this.node_content.hasOwnProperty('category') && (this.node_content.category.length != 0)){
-        this.node_content.category.forEach(element => {
-          if(element.tid == 3929)
-            this.types.push('event')
-        });
-      }
       if(this.node_content.hasOwnProperty('type') && (this.node_content.type.length != 0)){
         this.node_content.type.forEach(element => {
+          if(element.tid == 3929)
+            this.types.push('event')
           if(element.tid == 3938)
             this.types.push('podcast')
           if(element.tid == 3941)
@@ -127,8 +130,8 @@ export default {
   },
   filters: {
     createlink: function (value) {
-        if (!value) return ''
-        return "http://api.ed808.com/sites/default/files/" + value.substring(9)
+      if (!value) return ''
+      return "http://ed808.com/api/sites/default/files/" + value.substring(9)
     },
     convertDomain: function(value){
       // if (!value) return ''
@@ -250,7 +253,13 @@ export default {
     }
   }
   #audio-demos-vuejs{
-    margin: 30px auto;
-    padding: 0 30px;
+    margin: 45px auto 30px auto;
+    padding: 0 10%;
+    > div{
+      /*box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);*/
+      padding: 20px 15px;
+      border: 1px solid #eee;
+      border-radius: 20px;
+    }
   }
 </style>
