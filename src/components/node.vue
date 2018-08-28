@@ -225,7 +225,6 @@ export default {
     @include main-center-content();
     font-size: 21px;
     line-height: 33px;
-    font-family: Merriweather;
     letter-spacing: 0.3px;
     margin-top: 30px !important;
   }

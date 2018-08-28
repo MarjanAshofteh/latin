@@ -1,7 +1,9 @@
 <template>
     <div class="newspane">
       <section id="news">
-      <h1 class="md-headline">Upcoming Civil Engineering Events</h1>
+      <div class="md-headline">
+        <h5>Upcoming Civil Engineering Events</h5>
+      </div>
       <carousel 
         :per-page="4" 
         :navigationEnabled="true" 
@@ -80,14 +82,35 @@ button.VueCarousel-navigation-button{
 }
 .newspane{
   background-color: #fafafa;
-  padding-bottom: 100px;
+	padding: 0 36px 36px;
 }
 section#news{
-  width: 80%;
-  margin: 80px auto 20px auto;
+  width: 100%;
+	margin: 0px auto 20px auto;
+	padding: 0 36px;
 }
 .md-headline{
-  margin-bottom: 40px;
+	padding: 35px 0;
+	margin: 0;
+	position: relative;
+  text-align: left;
+  &:before {
+    content: "";
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    position: absolute;
+    top: 53px;
+  }
+  h5{
+    margin: 0;
+    font-weight: normal;
+    display: inline-block;
+    background: #fafafa;
+    z-index: 1;
+    position: relative;
+    padding-right: 15px;
+  }
 }
 
 </style>

@@ -97,11 +97,11 @@ export default {
 	position: absolute;
 }
 .md-content.news{
-  width: 76%;
-  margin: 35px auto 35px;
-  padding: 25px 25px;
-  text-align:left;
-  position: relative;
+  width: calc(100% - 72px);
+	margin: 0 36px;
+	padding: 25px 25px;
+	text-align: left;
+	position: relative;
   .md-title{
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
