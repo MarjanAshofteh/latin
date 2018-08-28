@@ -1,5 +1,5 @@
 <template>
-    <a class="content-teaser" :class="[('content-'+ nid)]" :href="'/node/' + nid" target="_blank">
+    <router-link class="content-teaser" :class="[('content-'+ nid)]" :to="'/node/' + nid">
     <md-card md-with-hover>
       <md-ripple>  
         <md-card-media md-ratio="16:9">
@@ -18,7 +18,7 @@
         </md-card-header>
       </md-ripple>  
     </md-card>
-    </a>
+    </router-link>
 </template>
 
 <script>
