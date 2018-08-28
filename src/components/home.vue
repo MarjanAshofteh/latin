@@ -6,7 +6,11 @@
         <div>
             <h1>Educational and Engineering institute 808</h1>
             <span>specialized training in Civil and Architecture
+<<<<<<< HEAD
                 <span>ed808.com</span>
+=======
+                <span>Ed808.com</span>
+>>>>>>> 4abf582a77a893017bcec0c8ae5e7a908807180d
             </span>
         </div>
     </section>
