@@ -1,7 +1,7 @@
 <template>
     <div class="newspane">
       <section id="news">
-      <h1 class="md-headline">Upcoming Civil Enginnering Events</h1>
+      <h1 class="md-headline">Upcoming Civil Engineering Events</h1>
       <carousel 
         :per-page="4" 
         :navigationEnabled="true" 
