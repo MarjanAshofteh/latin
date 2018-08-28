@@ -42,7 +42,6 @@ export default {
         {
           name: "Sample_Magic",
           title: "Prophet",
-          //src: require('../assets/audio.ogg'),
           src: this.src,
           isActive: true
         }
