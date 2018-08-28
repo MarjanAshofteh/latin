@@ -110,14 +110,10 @@ export default {
   methods:{
     type(){
       this.types = []
-      if(this.node_content.hasOwnProperty('category') && (this.node_content.category.length != 0)){
-        this.node_content.category.forEach(element => {
-          if(element.tid == 3929)
-            this.types.push('event')
-        });
-      }
       if(this.node_content.hasOwnProperty('type') && (this.node_content.type.length != 0)){
         this.node_content.type.forEach(element => {
+          if(element.tid == 3929)
+            this.types.push('event')
           if(element.tid == 3938)
             this.types.push('podcast')
           if(element.tid == 3941)
@@ -132,7 +128,7 @@ export default {
   filters: {
     createlink: function (value) {
       if (!value) return ''
-      return "http://api.ed808.com/sites/default/files/" + value.substring(9)
+      return "http://ed808.com/api/sites/default/files/" + value.substring(9)
     },
     convertDomain: function(value){
       // if (!value) return ''
