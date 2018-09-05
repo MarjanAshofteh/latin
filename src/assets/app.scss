@@ -71,9 +71,6 @@ header#header{
   }
   img.logo {
     height: 36px;
-    @media all and (max-width: 600px){
-      position: absolute;
-    }
   }
   a {
     text-decoration: none;

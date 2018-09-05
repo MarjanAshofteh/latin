@@ -71,7 +71,6 @@ export default {
     a{
       color: #fff !important;
     }
-    background-color: #92278f !important;
   }
   .event_bottom{
     position: absolute;
