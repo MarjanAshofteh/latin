@@ -1,6 +1,6 @@
 <template>
   <div class="video_player">
-    <youtube :video-id="videoId" player-width="840" player-height="472.5"></youtube>
+    <youtube :video-id="videoId" player-width="840" player-height="472.5" class="video_inside"></youtube>
   </div>
 </template>
 
@@ -33,6 +33,14 @@ export default {
     margin:50px 0 50px 0;
     iframe {
       height:475px !important;
+    }
+    .video_inside{
+      background-color: #f6f6f6;
+      min-height: 200px;
+      max-width: 840px;
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #eee; 
     }
   }
 </style>

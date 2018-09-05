@@ -8,11 +8,11 @@
 @import "~vue-material/dist/theme/all"; // Apply the theme
 
 @font-face {
-    font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    //src: url(./material.woff2) format('woff2');
-    src: url(http://ed808.com/staticfile/material.woff2) format('woff2');
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(./material.woff2) format('woff2'),url(http://ed808.com/staticfile/material.woff2) format('woff2');
+  //src: url(http://ed808.com/staticfile/material.woff2) format('woff2');
 }
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-track:after,
 .md-progress-bar.md-theme-default.md-indeterminate .md-progress-bar-fill:after,
@@ -31,6 +31,20 @@
   --md-theme-default-primary : #92278f;
   --md-theme-default-accent : #ba68c8;
   --md-theme-default-scrollbar-on-background-variant: #aaa;
+}
+html{
+  height:auto;
+}
+body{
+  margin: 0px;
+  width: 100%;
+  overflow-x: hidden;
+  position: unset !important;
+  background-color:#fafafa;
+}
+#app {
+  text-align: center;
+  /*margin-top: 50px;*/
 }
 header#header{
   box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;

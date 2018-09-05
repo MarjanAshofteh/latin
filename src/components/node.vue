@@ -64,8 +64,6 @@
 import eventData from '@/components/eventData'
 import author from '@/components/author'
 import tag from '@/components/tag'
-import embedVideo from '@/components/embedVideo'
-//import wavesurferPlayer from '@/components/wavesurferPlayer'
 import axios from 'axios'
 export default {
   name: 'node',
@@ -84,8 +82,7 @@ export default {
     eventData,
     author,
     tag,
-    embedVideo,
-    //wavesurferPlayer
+    embedVideo: () => import('@/components/embedVideo')
   },
   mounted(){
     axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',
@@ -142,25 +139,25 @@ export default {
 </script>
 
 <style lang="scss">
-  @mixin main-center-content(){
+  @mixin main-center-content() {
     max-width: 800px;
     text-align: left;
     direction: ltr;
     margin: auto;
   }
-  body{
+  body {
     background-color: white !important;
   }
-  .main-container{
+  .main-container {
     margin: 90px auto 50px auto;
     padding: 0px 0 15px 0;
   }
-  .edit_link{
+  .edit_link {
     position: absolute;
     top: 78px ;
     left: 25px;
   }
-  .top_header{
+  .top_header {
     height: 220px;
     display: flex;
     justify-content: center;
@@ -169,7 +166,7 @@ export default {
     background-image: linear-gradient(to right, #eee, #f9f9f9);
     flex-direction: column;
     position: relative;
-    > .date_and_category{
+    > .date_and_category {
       height: 40px;
       display: flex;
       justify-content: space-between;
@@ -177,22 +174,21 @@ export default {
       width: 80%;
       position: absolute;
       bottom: 13px;
-      a{
+      a {
         color: #0000008a !important;
         font-size: 17px;
       }
-      span{
+      span {
         //color: #ccc !important;
         color: #0000008a !important;
         font-size: 15px;
       }
     }
-    
   }
-  .tags{
+  .tags {
     @include main-center-content();
     margin: 20px auto 20px auto !important;
-    button{
+    button {
       border: none;
       color: rgba(0,0,0,.68) !important;
       background: rgba(0,0,0,.05) !important;
@@ -216,22 +212,41 @@ export default {
     background: #fff;
     z-index: 3;
   }
-  h1{
+  h1 {
     font-family: sans-serif;
     color:black;
     margin-bottom: 30px !important;
   }
-  .md-elevation-1{
+  .md-elevation-1 {
     padding: 25px 10px;
   }
-  article{
+  article {
     @include main-center-content();
-    font-size: 21px;
+    font-size: 18px;
     line-height: 33px;
     letter-spacing: 0.3px;
     margin-top: 30px !important;
+    p {
+      margin: 0 0 10px 0;
+    }
+    h2 {
+      font-size: 22px;
+      margin: 35px 0 11px 0;
+    }
+    h3 {
+      font-size: 20px;
+      margin: 24px 0 12px 0;
+    }
+    h4 {
+      font-size: 19px;
+      margin: 18px 0 12px 0;
+    }
+    h5,h6 {
+      font-size: 18px;
+      margin: 18px 0 12px 0;
+    }
   }
-  .reference{
+  .reference {
     @include main-center-content();
     h3{
       display: inline;
@@ -240,22 +255,22 @@ export default {
   .md-snackbar.error{
     background-color: #F44336;
   }
-  .node_type_event{
-    .top_header{
+  .node_type_event {
+    .top_header {
       height: 300px !important;
       justify-content: center;
       margin-bottom: 110px; 
     }
   }
-  .node_type_video{
+  .node_type_video {
     .node_body > img{
       display: none;
     }
   }
-  #audio-demos-vuejs{
+  #audio-demos-vuejs {
     margin: 45px auto 30px auto;
     padding: 0 10%;
-    > div{
+    > div {
       /*box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);*/
       padding: 20px 15px;
       border: 1px solid #eee;

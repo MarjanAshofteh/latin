@@ -153,73 +153,77 @@ export default {
       this.$store.commit('LOGEDOUT');
     },
     addEmail() {
-      var config = {
-        headers:{
-          'Content-Type': 'application/json',
-          'crossDomain': true
-        },
-        baseURL: 'http://civil808.com'
-      }
-      var geturl = '/latin/pbd?email="' + this.inputBox + '"' 
-      axios.get( geturl , config)
-      .then((response) => {
+      axios.post('http://api.ed808.com/latin/user/subscribe_email',
+      {
+        'email':this.inputBox
+      },
+      {
+        headers: {
+          'Content-type': 'application/json'
+        }
       })
-      this.aftersubmit = true;
-    }    
+      .then((data) => {
+        this.aftersubmit = true
+        this.inputBox = ''
+      })
+      .catch(e => {
+
+      });
+    }
   }
 }
 </script>
 
-<style src="./assets/app.css" lang="scss">
-.md-menu button {
-	margin: 0;
-}
-</style>
+
 <style lang="scss">
-    section#subscribe{
-        background: #5a5f64;
-        padding: 10px 0 30px 0;
-        color: #fff;
-        .input-wrapper{
-            position: relative;
-            width: 400px;
-            margin: auto;
-            @media all and (max-width: 700px){
-                width: 300px;
-            }
-        }
-        input{
-            width: 400px;
-            box-sizing: border-box;
-            -webkit-transition: width 0.4s ease-in-out;
-            transition: width 0.4s ease-in-out;
-            border-radius: 30px;
-            height: 50px;
-            -webkit-appearance: button-bevel;
-            padding: 0 17px;
-            font-size: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            outline: none;
-            @media all and (max-width: 700px){
-                width: 300px;
-            }
-        }
-        button{
-            position: absolute;
-            height: 44px;
-            right: -1px;
-            top: -2px;
-            width: 45px;
-            border-radius: 50%;
-            -webkit-appearance: button-bevel;
-            margin: 5px;
-            cursor: pointer;
-            background-color: #BA68C8;
-            &:before {
-                content: '+';
-                font-size: 28px;
-                color: #ffffff;
-            }
-        }
+  .md-menu button {
+    margin: 0;
+  }
+  section#subscribe{
+    background: #5a5f64;
+    padding: 10px 0 30px 0;
+    color: #fff;
+    .input-wrapper{
+      position: relative;
+      width: 400px;
+      margin: auto;
+      @media all and (max-width: 700px){
+        width: 300px;
+      }
     }
+    input{
+      width: 400px;
+      box-sizing: border-box;
+      -webkit-transition: width 0.4s ease-in-out;
+      transition: width 0.4s ease-in-out;
+      border-radius: 30px;
+      height: 50px;
+      -webkit-appearance: button-bevel;
+      padding: 0 7%;
+      font-size: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      outline: none;
+      color: white;
+      @media all and (max-width: 700px){
+        width: 300px;
+      }
+    }
+    button{
+      position: absolute;
+      height: 44px;
+      right: -1px;
+      top: -2px;
+      width: 45px;
+      border-radius: 50%;
+      -webkit-appearance: button-bevel;
+      margin: 5px;
+      cursor: pointer;
+        background-color: #BA68C8;
+      &:before {
+        content: '+';
+        font-size: 28px;
+        color: #ffffff;
+      }
+    }
+  }
 </style>

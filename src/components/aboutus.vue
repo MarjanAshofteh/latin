@@ -1,53 +1,92 @@
 
 <template>
   <div class="aboutus">
-      <div class="top-pic">
-        <h1>about us</h1>
+    <div class="top-pic">
+      <img :src="pic | createlink" width="100%" height="241">
+      <h1>about us</h1>
+    </div>
+    <div class="inner">
+      <div class="atext" v-html="text">
       </div>
-      <div class="inner">
-          <div class="atext">
-              <p dir="ltr">Educational and Engineering Institute 808 (established in 2008, Iran, Tehran) is proud to use all its efforts for education in two fields:&nbsp;&nbsp;</p><p dir="ltr">Structural and Earthquake engineering. 808 activities are divided in two categories, online and offline training courses, on the website. Combining technology and the newest global experiences in all fields of civil and architectural engineering, 808 is working with a special view in connection of engineering knowledge and industry. From the beginning, outlook of 808 was to internationalize its services and eliminate boundaries in transfer of civil engineering and architectural knowledge between professionals all around the world and now we are at this point. We are proud to announce that by launching English page focusing on performance-based-design in April 2018, 808 will have a great step towards its goal; but this is the beginning.</p><p dir="ltr">Join us.</p><p dir="ltr">&nbsp;</p><p dir="ltr">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Website</strong> : Civil808.com</p><p dir="ltr">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Email</strong> : info [at] civil808.com , saze808 [at] gmail.com</p><p dir="ltr">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Tel</strong> : +98 21 88275253 , +98 21 88272694</p><p dir="ltr">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Address</strong> : Iran, Tehran, Jalal-e-Al-e-Ahmad Hwy, Gisha Bridge, Foroozanfar Blv, No. 1, Unit 7</p>
-          </div>
-      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'aboutus'
-}
+  import axios from 'axios'
+  export default {
+    name: 'aboutus',
+    data(){
+      return{
+        text:'',
+        pic:''
+      }
+    },
+    mounted(){
+      axios.get('http://api.ed808.com/latin/page?args=about_us',
+      {
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+      .then((data) => {
+        this.text = data.data.body
+        this.pic = data.data.image
+      })
+      .catch(e => {
+
+      });
+    },
+    filters:{
+      createlink: function (value) {
+        if (!value) return ''
+        return "http://ed808.com/api/sites/default/files/" + value.substring(9)
+      }
+    }
+  }
 </script>
 
-<style scoped>
-    .atext{
-        margin: 50px 0;
-        text-align:left;
+<style scoped lang="scss">
+  .atext{
+    margin: 50px 0;
+    text-align:left;
+  }
+  
+  .inner{
+    padding: 0 36px;
+  }
+  .top-pic{
+    height: 241px;
+    position: relative;
+    margin-top: 90px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:before {
+      content: '';
+      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      background-color: #0000005e;
+      z-index: 1;
+    }
+    img{
+      min-width: 100%;
+      min-height: 100%;
+      max-width: none;
+      width: auto;
+      position: absolute;
+      z-index: 0;
     }
     h1{
-        padding-top: 100px;
-        text-shadow: 0px -1px 5px #000000, 0 -1px 0px #000000;
-        color: white;
-        position: relative;
-        font-size: 35px;
+      text-shadow: 0px -1px 5px #000000, 0 -1px 0px #000000;
+      color: white;
+      position: relative;
+      font-size: 35px;
+      z-index: 2;
     }
-    .inner{
-        padding: 0 36px;
-    }
-    .top-pic{
-        background-image: url(http://civil808.com/en/staticfile/conf.jpg);
-        background-size: cover;
-        background-position: center;
-        height: 241px;
-        position: relative;
-        margin-top: 90px;
-    }
-    .top-pic:before {
-        content: '';
-        width: 100%;
-        position: absolute;
-        top: 0;
-        right: 0;
-        height: 100%;
-        background-color: #0000005e;
-    }
+  }
 </style>
