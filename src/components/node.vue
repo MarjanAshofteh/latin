@@ -165,18 +165,22 @@
         }
       },
       convertDomain(value){
-        return value.replace('ed808.com', 'api.ed808.com').replace('="/sites', '="http://api.ed808.com/sites')
+        //this work but its performance is slow
+        /* return value.split('="/sites').join('="http://api.ed808.com/sites') */ 
+        String.prototype.replaceAll = function(search, replacement) {
+          var target = this;
+          return target.replace(new RegExp(search, 'g'), replacement);
+        };
+        return value.replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
+        .replaceAll('="/sites', '="http://api.ed808.com/sites')
+        .replaceAll('="/node', '="http://ed808.com/node')
       }
     },
     filters: {
       createlink: function (value) {
         if (!value) return ''
         return "http://ed808.com/api/sites/default/files/" + value.substring(9)
-      },
-      convertDomain: function(value){
-        // if (!value) return ''
-        return value.replace('ed808.com', 'api.ed808.com').replace('="/sites', '="http://api.ed808.com/sites')
-      },
+      }
     }
   }
 </script>
@@ -269,25 +273,52 @@
         font-size: 18px;
         line-height: 33px;
         letter-spacing: 0.3px;
-        margin-top: 30px !important;
+        margin-top: 30px !important;  
         p {
           margin: 0 0 10px 0;
         }
         h2 {
           font-size: 22px;
           margin: 35px 0 11px 0;
+          line-height: 40px;
         }
         h3 {
           font-size: 20px;
           margin: 24px 0 12px 0;
+          line-height: 38px;
         }
         h4 {
           font-size: 19px;
           margin: 18px 0 12px 0;
+          line-height: 36px;
         }
         h5,h6 {
           font-size: 18px;
           margin: 18px 0 12px 0;
+          line-height: 33px;
+        }
+        img{
+          display: block;
+          margin: 40px auto;
+        }
+        .picture_info{
+          text-align: center;
+          margin: -29px 0 40px 0;
+          font-size: 15px;
+        }
+        .boldCenter_line {
+          display: inline-block;
+          width: 100%;
+          text-align: center !important;
+          padding: 20px 0;
+          background: rgb(252, 252, 252);
+          border: 1px solid #f0f1f2;
+          margin: 15px 0 !important;
+          a{
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+          }
         }
       }
       &:before {
