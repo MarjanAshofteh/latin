@@ -1,28 +1,40 @@
 <template>
-    <div class="newspane">
-      <section id="news">
+    <div class="eventspane">
+      <section id="events">
       <div class="md-headline">
         <h5>Upcoming Civil Engineering Events</h5>
         <div class="more-link"><router-link tag="md-button" to="/contents?type=4058">See All</router-link></div>
       </div>
+
+      <div class="events-pane loading" v-if="loading">
+        <md-progress-spinner 
+          :md-diameter="100" 
+          :md-stroke="5" 
+          md-mode="indeterminate">
+        </md-progress-spinner>
+      </div>
+
       <carousel 
         :per-page="4" 
         :navigationEnabled="true" 
         navigationNextLabel="navigate_next"
         navigationPrevLabel="navigate_before"
         :paginationEnabled="false">
-        <slide v-for="news in newss" 
-            :key="news.nid">
+        <slide v-for="event in events" 
+            :key="event.nid">
           <newsteaser 
-            :newstitle="news.title" 
-            :newscompany="news.field_company_value" 
-            :newsdate="news.field_eventtime_value | erasetime" 
-            :newsnid="news.nid"/>
+            :newstitle="event.title" 
+            :newscompany="event.field_company_value" 
+            :newsdate="event.field_eventtime_value | erasetime" 
+            :newsnid="event.nid"
+            @setNid="show_event(event.nid)"/>
         </slide>
         </carousel>
       </section>
-      <div v-if="$store.state.newsnid!=0">
-        <news/>
+      <div v-if="eventNid != 0">
+        <news 
+          :nid="eventNid"
+          @clearNid="eventNid = 0"/>
       </div>
     </div>
 </template>
@@ -36,15 +48,23 @@ export default {
   name: 'newspane',
   data () {
     return {
-      newss:[]
+      events:[],
+      loading: true,
+      eventNid: 0,
     }
   },
   mounted() {
     fetch('http://api.ed808.com/latin/latin_news?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
       .then(response => response.json())
       .then((data) => {
-          this.newss = data
+          this.events = data
+          this.loading = false
     })
+  },
+  methods:{
+    show_event(nid){
+      this.eventNid = nid
+    }
   },
   components: {
     Carousel,
@@ -81,14 +101,27 @@ button.VueCarousel-navigation-button{
   padding: 0 !important;
   color:#92278f !important;
 }
-.newspane{
+.eventspane{
   background-color: #fafafa;
 	padding: 0 36px 36px;
+  position: relative;
+  .events-pane.loading {
+    position: absolute;
+    z-index: 3;
+    width: 100%;
+    right: 0;
+    top: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
-section#news{
+section#events{
   width: 100%;
 	margin: 0px auto 20px auto;
 	padding: 0 36px;
+  min-height: 300px;
 }
 .md-headline{
 	padding: 35px 0;

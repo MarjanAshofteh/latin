@@ -6,8 +6,6 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     //strict: process.env.NODE_ENV !== 'production',  
     state:{
-        newsnid: 0,
-        news_loading : true,
         isLogedIn : false,
         uid:0,
         src:'',
@@ -33,13 +31,6 @@ const store = new Vuex.Store({
         filters : {}
     },
     mutations:{
-        SET_NEWS(state,newnid){
-            state.newsnid = newnid
-            state.news_loading = true            
-        },
-        SET_NEWS_LOADING(state){
-            state.news_loading = false
-        },
         ISLOGIN(state,uid){
             state.isLogedIn = true
             state.uid = uid
@@ -57,13 +48,12 @@ const store = new Vuex.Store({
         },
     },
     getters:{
-        getMynid: state => state.newsnid,
         getFilters: state => state.selected,
     },
     actions:{
 
     }
 })
-// module.exports = store
+
 export default store
 

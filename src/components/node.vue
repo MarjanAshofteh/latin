@@ -199,6 +199,9 @@
   .main-container {
     margin: 90px auto 50px auto;
     padding: 0px 0 15px 0;
+    &.node_type_event {
+      margin: 0 !important;
+    }
     .loading {
       position: absolute;
       width: 100%;

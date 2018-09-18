@@ -1,12 +1,15 @@
 <template>
-  <md-content class="news md-elevation-2" v-if="showornot">
-    <div class="loading" v-if="$store.state.news_loading">
+  <md-content class="news md-elevation-2">
+    
+    <div class="event loading" v-if="loading">
       <md-progress-bar md-mode="indeterminate"></md-progress-bar>
     </div>
+    
     <md-button @click="clear_news()" class="md-icon-button myclose">
         <md-icon>close</md-icon>
       </md-button>
     <div class="md-title">{{news.title}}</div>
+    
     <div class="md-layout md-gutter" v-if="'uri' in news">
       <div class="md-layout-item">
         <img v-bind:src="news.uri | converturl " />
@@ -17,6 +20,9 @@
       <div class="md-body-2 md-layout-item md-size-100 " v-html="news.body_value"></div>
     </div>
     
+    <router-link :to="'/node/' + nid">
+      <md-button class="md-raised" style="margin: 0 0 0 auto;display: block;">read more</md-button>
+    </router-link>
   </md-content>
 </template>
 
@@ -24,50 +30,35 @@
 
 export default {
   name: 'news',
+  props: ['nid'],
   data(){
     return{
       news:[],
-      close:false
+      loading: true
     }
   },
   mounted(){
-    console.log('mounted')
-    this.$store.watch(s =>{
-      this.close=false
-      this.getnews()
-    })
+    this.getNews()
   },
-  beforeUpdate(){
-    //console.log('before update')
-  },
-  updated(){
-    //console.log('updatedddddddddddddddddd')
-  },
-  beforeDestroy(){
-    //console.log('before destrooooooooooy')
-  },
-  computed:{
-    showornot(){
-      //this.news!=false && 
-      if(this.close==false)
-        return true
-      else
-        return false
+  watch: {
+    nid: function(){
+      this.getNews()
     }
   },
   methods:{
-    getnews(){
-      this.print=false
-      fetch('http://api.ed808.com/latin/latin_news/'+ this.$store.state.newsnid +'?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
-        .then(response => response.json())
-        .then((data) => {
-          this.news = data.latin_news
-          this.$store.commit('SET_NEWS_LOADING');
-      })
+    getNews(){
+      if(this.nid != 0){
+        this.loading = true
+        fetch('http://api.ed808.com/latin/latin_news/'+ this.nid +'?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
+          .then(response => response.json())
+          .then((data) => {
+            this.news = data.latin_news
+            this.loading = false
+        })
+      }
     },
     clear_news(){
-        this.close=true
-        this.$store.commit('SET_NEWS', 0);
+      this.$emit('clearNid');
     } 
   },
   filters: {
@@ -82,13 +73,13 @@ export default {
 </script>
 
 <style lang="scss">
-.loading {
+.event.loading {
 	position: absolute;
 	width: 100%;
 	height: 100%;
 	left: 0;
 	top: 0;
-	background: #fff;
+  background: rgba(255, 255, 255, 0.5);
 }
 :root{
     --md-theme-default-primary: #673AB7;

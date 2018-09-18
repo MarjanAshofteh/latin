@@ -6,18 +6,18 @@
         </md-card-header>
 
         <md-card-content>
-            <md-tooltip md-direction="left" md-delay="300">Date</md-tooltip>
-          <md-icon>timer</md-icon><!--<b>Date:</b>--> {{newsdate}}
-          
+            <md-icon>timer</md-icon>
+            {{newsdate}}
+            <span class="tooltip">Date</span>
         </md-card-content>
         <md-card-content class="company">
-            <md-tooltip md-direction="left" md-delay="300">Organizer</md-tooltip>
-          <md-icon>supervised_user_circle</md-icon><!--<b>Organizer:</b>--> {{newscompany}}
-          
+            <md-icon>supervised_user_circle</md-icon>
+            {{newscompany}}
+            <span class="tooltip">Organizer</span>
         </md-card-content>
 
         <md-card-actions>
-          <md-button class="md-raised" @click="set_news(newsnid)">read more</md-button>
+          <md-button class="md-raised" @click="set_news(newsnid)">more</md-button>
         </md-card-actions>
 
         <md-card-content class="date-fan">
@@ -36,7 +36,7 @@ export default {
     props: ['newstitle','newsdate','newscompany','newsnid'],
     methods:{
         set_news(nid){
-            this.$store.commit('SET_NEWS', nid);
+            this.$emit('setNid');
         }
     },
     components: {
@@ -92,6 +92,10 @@ export default {
         }
         .md-card-content{
             padding: 4px 16px;
+            &:hover span.tooltip{
+                margin-left: 10px;
+                opacity: 1;
+            }
         }
         .md-subhead b{
             color:#333
@@ -103,6 +107,15 @@ export default {
         }
         .company{
             margin-bottom: 65px;
+        }
+        span.tooltip {
+            background: #ddd;
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 0;
+            opacity: 0;
+            transition: all 0.2s ease;
         }
         .md-card-content.date-fan {
             position: absolute;

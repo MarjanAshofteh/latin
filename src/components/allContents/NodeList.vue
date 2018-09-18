@@ -280,7 +280,7 @@ export default {
 	  flex: 0 1 75%;
   }
 }
-.loading {
+.contents .loading {
 	position: absolute;
 	z-index: 3;
 	background: rgba(255, 255, 255, 0.6);
