@@ -83,6 +83,7 @@ import Vue from 'vue';
 
 export default {
   name: 'NodeList',
+  props: ['filterEnabled'],
   data () {
     return {
       contents:[],
@@ -173,7 +174,8 @@ export default {
       }
 
       //submitting changes
-      this.$router.replace({ name: "allContents", query : query })
+      if(this.filterEnabled)
+        this.$router.replace({ name: "allContents", query : query })
       fetch('http://api.ed808.com/latin/latin_contents?'+ url)
         .then(response => response.json())
         .then((data) => {

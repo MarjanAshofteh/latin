@@ -44,7 +44,9 @@ body{
 }
 #app {
   text-align: center;
-  /*margin-top: 50px;*/
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
 }
 header#header{
   box-shadow: 0 1px 6px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.12) !important;

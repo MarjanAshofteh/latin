@@ -255,6 +255,7 @@
     background: #5a5f64;
     padding: 10px 0 30px 0;
     color: #fff;
+    margin-top: auto;
     .input-wrapper{
       position: relative;
       width: 400px;
