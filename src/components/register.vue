@@ -167,33 +167,26 @@
             this.lastUser = `${this.form.fullName}`
             this.userSaved = true
             this.sending = false
+            this.$emit('do_navbar')
             if(data.data.uid != 0){
-              this.is_login(data.data.uid)
-              axios.get('http://api.ed808.com/latin/user/login/nav_bar_info?parameter[hash]=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
-              {
-                headers:{
-                'Content-type': 'application/json'
-                }
-              })
-              .then((data) => {
-                if(data.data.uid != 0){
-                  this.is_login(data.data.uid)
-                  this.nav_bar(data.data.picture,data.data.username)
-                  this.$router.push('/user/'+ data.data.uid)
-                }
-              })
-              .catch(e => {
-                console.log('errors for nav_bar_info : ' + e)
-              })
-          }
-            this.$router.push('/user/'+ data.data.uid)
+              this.setUid(data.data.uid)
+              this.$router.push('/user/'+ data.data.uid)
+            }
             this.clearForm()
             /* log user in by calling login component */
           })
           .catch(e => {
-              this.errors = e.response.data
-              this.showError = true
-              //this.clearForm()
+            if(e.hasOwnProperty('response')){
+              if(e.response.hasOwnProperty('data'))
+                this.errors = e.response.data
+              else{
+                this.errors = e.response
+              }
+            }
+            else{
+              this.errors = e
+            }
+            this.showError = true
           });
       },
       validateUser () {
@@ -204,19 +197,40 @@
         }
       },
       loguserin(data){
-        this.is_login(data.data.uid)
-        var jsonCookie2 = data.data.token
+        this.setUid(data.data.uid)
         //save data to cookie storage
-        this.setCookie("token", jsonCookie2 , 23)
-        this.$router.push('/user/'+ data.data.uid)
-      },
-      is_login(uid){
-        this.$store.commit('ISLOGIN',uid);
+        this.setCookie("token", data.data.token , 23)
       }
     },
     mounted(){
-      if(this.getCookie("token")!= null){
-        this.$router.push('/user/'+ this.uid)
+      if(this.$store.getters.getUid){
+      this.$router.push('/user/'+ this.$store.getters.getUid)
+      }
+      else{
+        //this is just work for admins that login in api.edu befor(has session and doesnt have token)
+        //this code is gonna set token for them
+        axios.defaults.crossDomain = true;
+        axios.defaults.withCredentials  = true;
+        axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+        {
+          headers:{
+            'Content-type': 'application/json'
+          }
+        })
+        .then((data) => {
+          if(data.data.uid != 0){
+            this.user.uid = data.data.uid
+            this.user.picture = data.data.picture
+            this.user.username = data.data.username
+            this.setCookie("token", data.data.token , 23)
+            this.setUid(data.data.uid)
+            this.IsLogin = true
+            this.$router.push('/user/'+ data.data.uid)
+          }
+        })
+        .catch(e => {
+          console.log('errors for nav_bar_info : ' + e)
+        })
       }
     }
   }
