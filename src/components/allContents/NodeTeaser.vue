@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import news from '@/components/news'
+import news from '@/components/front/news'
 
 export default {
     name: 'NodeTeaser',

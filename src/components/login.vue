@@ -180,7 +180,7 @@ export default {
   form{
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 50px);
+    min-height: calc(100vh - 50px);
     > div{
         overflow: hidden;
     }

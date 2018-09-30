@@ -12,14 +12,14 @@
 
     <newspane/>
 
-    <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
+    <!-- <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/> -->
 
   </div>
 </template>
 
 <script>
 import axios from 'axios'
-import newspane from '@/components/newspane'
+import newspane from '@/components/front/newspane'
 import NodeList from '@/components/allContents/NodeList'
 
 export default {
