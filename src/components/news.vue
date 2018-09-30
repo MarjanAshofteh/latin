@@ -63,10 +63,8 @@ export default {
   },
   filters: {
     converturl: function(value){
-        if (!value) return '';
-        var thestart = 'http://api.ed808.com/sites/default/files/styles/808/public';
-        var theend = value.substr(8);
-        return thestart + theend;
+      if (!value) return ''
+      return "http://api.ed808.com/sites/default/files/" + value.substring(9)
     }
   }
 }

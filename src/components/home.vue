@@ -1,9 +1,9 @@
 <template>
-  <div style="margin-top:90px;background-color: #fafafa;">
+  <div>
     <section id="banner">
       <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->
       <div>
-        <h1>Educational and Engineering institute 808</h1>
+        <h1>808 Educational and Engineering institute</h1>
         <span>specialized training in Civil and Architecture
           <span>Ed808.com</span>
         </span>
@@ -12,7 +12,7 @@
 
     <newspane/>
 
-    <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
+    <!--<NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>-->
 
   </div>
 </template>

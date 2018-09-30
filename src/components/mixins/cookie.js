@@ -28,11 +28,8 @@ export const cookie = {
       }
       return null
     },
-    is_login(uid){
-      this.$store.commit('ISLOGIN',uid);
-    },
-    nav_bar(src,username){
-      this.$store.commit('NAV_BAR',src,username)
+    setUid(uid){
+      this.$store.commit('LOGIN',uid);
     }
   }
 }

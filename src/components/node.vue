@@ -179,7 +179,7 @@
     filters: {
       createlink: function (value) {
         if (!value) return ''
-        return "http://ed808.com/api/sites/default/files/" + value.substring(9)
+        return "http://api.ed808.com/sites/default/files/" + value.substring(9)
       }
     }
   }
@@ -197,11 +197,8 @@
     background-color: white !important;
   }
   .main-container {
-    margin: 90px auto 50px auto;
+    margin-bottom: 50px;
     padding: 0px 0 15px 0;
-    &.node_type_event {
-      margin: 0 !important;
-    }
     .loading {
       position: absolute;
       width: 100%;
@@ -221,7 +218,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 90px 0 0 0;
       background-image: linear-gradient(to right, #eee, #f9f9f9);
       flex-direction: column;
       position: relative;
@@ -349,9 +345,6 @@
         display: inline;
       }
     }
-  } 
-  .md-elevation-1 {
-    padding: 25px 10px;
   }
   .md-snackbar.error{
     background-color: #F44336;

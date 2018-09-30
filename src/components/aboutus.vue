@@ -58,7 +58,6 @@
   .top-pic{
     height: 241px;
     position: relative;
-    margin-top: 90px;
     overflow: hidden;
     display: flex;
     align-items: center;

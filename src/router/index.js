@@ -24,7 +24,7 @@ export default new Router({
       name: 'aboutus',
       component: aboutus
     },
-    /*{
+    {
       path: '/register',
       name: 'register',
       component: register
@@ -33,7 +33,7 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
-    },*/
+    },
     {
       path: '/contents',
       name: 'allContents',

@@ -43,130 +43,140 @@ import { required } from 'vuelidate/lib/validators'
 import { cookie } from './mixins/cookie.js'
 
 export default {
-    name: 'login',
-    mixins: [validationMixin,cookie],
-    data(){
-        return{
-            errors:'',
-            showError:false,
-            sessid:'',
-            session_name:'',
-            token:'',
-            form:{
-                username_email: null,
-                password: null,
-            },
-            userSaved: false,
-            sending: false,
-            lastUser: null
-        }
-    },
-    validations: {
-      form: {
-        username_email: {
-          required
-        },
-        password: {
-          required
-        }
-      }
-    },
-    methods:{
-        getValidationClass (fieldName) {
-            const field = this.$v.form[fieldName]
-            if (field) {
-                return {
-                    'md-invalid': field.$invalid && field.$dirty
-                }
-            }
-        },
-        clearForm () {
-            this.$v.$reset()
-            this.form.username_email = null
-            this.form.password = null
-        },
-        logUserIn(){
-            this.sending = true
-            var data = this.createPostData
-            axios.post('http://api.ed808.com/latin/user/login',
-            data,
-            {
-                headers: {
-                'Content-type': 'application/json'
-                }
-            })
-            .then((data) => {
-                this.sessid = data.data.sessid
-                this.session_name = data.data.session_name
-                this.token = data.data.token
-                var jsonCookie = this.session_name + '=' + this.sessid
-                var jsonCookie2 = this.token
-                this.setCookie( this.session_name , this.sessid , 23)
-                //this.setCookie("user_cookie", jsonCookie , 23)
-                this.setCookie("token", jsonCookie2 , 23)
-                this.lastUser = `${this.form.username_email}`
-                this.userSaved = true
-                this.sending = false
-                if(data.data.uid != 0){
-                    this.is_login(data.data.uid)
-                    axios.get('http://api.ed808.com/latin/user/login/nav_bar_info?parameter[hash]=50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60',
-                    {
-                        headers:{
-                        'Content-type': 'application/json',
-                        //'Cookie': document.cookie --> Refused to set unsafe header "Cookie"
-                        'Cookie': document.cookie,
-                        //'Cookie': 'test',
-                        },
-                        withCredentials: true,
-                        crossDomain: true
-                    })
-                    .then((data) => {
-                        if(data.data.uid != 0){
-                            this.is_login(data.data.uid)
-                            this.nav_bar(data.data.picture,data.data.username)
-                            this.$router.push('/user/'+ data.data.uid)
-                        }
-                    })
-                    .catch(e => {
-                        console.log('errors for nav_bar_info : ' + e)
-                    })
-                }
-                this.clearForm()
-            })
-            .catch(e => {
-                this.errors = e.response.data
-                this.showError = true
-                //this.clearForm()
-                /*todo : showing error without [""] */
-            });
-        },
-        validateUser(){
-            this.$v.$touch()
-            if (!this.$v.$invalid) {
-                this.logUserIn()
-            }
-        },
-        is_login(uid){
-            this.$store.commit('ISLOGIN',uid);
-        }
-    },
-    mounted(){
-        console.log('login.vue mounted')
-        if(this.getCookie("token")!= null){
-            if(this.$store.state.uid != 0)
-                this.$router.push('/user/'+ this.$store.state.uid)
-        }
-    },
-    computed:{
-        createPostData(){
-            return{
-                hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
-                username_email : this.form.username_email,
-                password : this.form.password,
-                version : 'pbd_0'
-            }
-        }
+  name: 'login',
+  mixins: [validationMixin,cookie],
+  data(){
+    return{
+      errors:'',
+      showError:false,
+      sessid:'',
+      session_name:'',
+      token:'',
+      form:{
+        username_email: null,
+        password: null,
+      },
+      userSaved: false,
+      sending: false,
+      lastUser: null
     }
+  },
+  validations: {
+    form: {
+      username_email: {
+        required
+      },
+      password: {
+        required
+      }
+    }
+  },
+  methods:{
+    getValidationClass (fieldName) {
+        const field = this.$v.form[fieldName]
+        if (field) {
+            return {
+                'md-invalid': field.$invalid && field.$dirty
+            }
+        }
+    },
+    clearForm(){
+        this.$v.$reset()
+        this.form.username_email = null
+        this.form.password = null
+    },
+    logUserIn(){
+      this.sending = true
+      var data = this.createPostData
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      axios.post('http://api.ed808.com/latin/user/login',
+      data,
+      {
+        headers: {
+        'Content-type': 'application/json'
+        }
+      })
+      .then((data) => {
+        this.sessid = data.data.sessid
+        this.session_name = data.data.session_name
+        this.token = data.data.token
+        var jsonCookie2 = this.token
+        //this.setCookie( this.session_name , this.sessid , 23)
+        this.setCookie("token", jsonCookie2 , 23)
+        this.lastUser = `${this.form.username_email}`
+        this.userSaved = true
+        this.sending = false
+        this.$emit('do_navbar')
+        if(data.data.uid != 0){
+          this.setUid(data.data.uid)
+          this.$router.push('/user/'+ data.data.uid)
+        }
+        this.clearForm()
+      })
+      .catch(e => {
+        if(e.hasOwnProperty('response')){
+          if(e.response.hasOwnProperty('data'))
+            this.errors = e.response.data
+          else{
+            this.errors = e.response
+          }
+        }
+        else{
+          this.errors = e
+        }
+        this.showError = true
+        //this.clearForm()
+        /*todo : showing error without [""] */
+      });
+    },
+    validateUser(){
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        this.logUserIn()
+      }
+    }
+  },
+  mounted(){
+    if(this.$store.getters.getUid){
+      this.$router.push('/user/'+ this.$store.getters.getUid)
+    }
+    else{
+      //this is just work for admins that login in api.edu befor(has session and doesnt have token)
+      //this code is gonna set token for them
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
+      {
+        headers:{
+          'Content-type': 'application/json'
+        }
+      })
+      .then((data) => {
+        if(data.data.uid != 0){
+          this.user.uid = data.data.uid
+          this.user.picture = data.data.picture
+          this.user.username = data.data.username
+          this.setCookie("token", data.data.token , 23)
+          this.setUid(data.data.uid)
+          this.IsLogin = true
+          this.$router.push('/user/'+ data.data.uid)
+        }
+      })
+      .catch(e => {
+        console.log('errors for nav_bar_info : ' + e)
+      })
+    }
+  },
+  computed:{
+    createPostData(){
+      return{
+        hash : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+        username_email : this.form.username_email,
+        password : this.form.password
+      }
+    }
+  }
 }
 </script>
 
