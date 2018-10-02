@@ -19,7 +19,7 @@
 
 <script>
 import axios from 'axios'
-import newspane from '@/components/newspane'
+import newspane from '@/components/front/newspane'
 import NodeList from '@/components/allContents/NodeList'
 
 export default {

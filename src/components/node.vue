@@ -136,6 +136,7 @@
       })
       .then((data) => {
         this.node_content = data.data.content
+        console.log(this.node_content)
         this.author = data.data.author
       })
       .then((data) => {

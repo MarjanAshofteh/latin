@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from '@/components/home'
+import home from '@/components/front/home'
 import aboutus from '@/components/aboutus'
 import register from '@/components/register'
 import login from '@/components/login'
 import profile from '@/components/profile'
 import node from '@/components/node'
 import allContents from '@/components/allContents/allContents'
+import tags from '@/components/tags/tags'
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ export default new Router({
       path: '/node/:nid',
       name: 'node',
       component: node
+    },
+    {
+      path: '/tags/:tid/:tname',
+      name: 'tags',
+      component: tags
     },
     { path: '*', redirect: '/' }, // catch all use case
   ]
