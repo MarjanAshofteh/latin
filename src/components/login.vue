@@ -154,13 +154,9 @@ export default {
       })
       .then((data) => {
         if(data.data.uid != 0){
-          this.user.uid = data.data.uid
-          this.user.picture = data.data.picture
-          this.user.username = data.data.username
-          this.setCookie("token", data.data.token , 23)
-          this.setUid(data.data.uid)
-          this.IsLogin = true
-          this.$router.push('/user/'+ data.data.uid)
+          this.setCookie('token', data.data.token , 23)
+          //under line is not working, I think.
+          this.$emit('do_navbar')
         }
       })
       .catch(e => {
