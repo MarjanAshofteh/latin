@@ -12,7 +12,7 @@
 
     <newspane/>
 
-    <!--<NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>-->
+    <NodeList :filterEnabled="false" class="md-card md-theme-default md-layout-item md-size-80"/>
 
   </div>
 </template>

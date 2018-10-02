@@ -14,7 +14,7 @@
           class="md-layout-item" 
           style="max-width: 500px;"
           md-clearable 
-          @md-clear="getContents()"
+          @md-clear="clearSearch()"
           md-layout="box">
           <label>Search</label>
           <md-input class="reset-input"
@@ -37,7 +37,7 @@
       
       <md-divider></md-divider>
 
-      <md-empty-state v-if="count < 1" style="	margin: 30px auto;"
+      <md-empty-state v-if="count < 1 && Object.keys(chips).length > 0" style="	margin: 30px auto;"
         md-rounded
         md-icon="search"
         md-label="No item found"
@@ -83,7 +83,7 @@ import Vue from 'vue';
 
 export default {
   name: 'NodeList',
-  props: ['filterEnabled'],
+  props: ['router', 'filterEnabled', 'tag'],
   data () {
     return {
       contents:[],
@@ -173,9 +173,14 @@ export default {
         query.page = this.page
       }
 
+      //handling tags
+      if(this.tag > 0){
+        url += '&parameter[tag]=' + this.tag
+      }
+
       //submitting changes
       if(this.filterEnabled)
-        this.$router.replace({ name: "allContents", query : query })
+        this.$router.replace({ name: this.router, query : query })
       fetch('http://api.ed808.com/latin/latin_contents?'+ url)
         .then(response => response.json())
         .then((data) => {
@@ -216,6 +221,11 @@ export default {
           })
         break
       }
+    },
+    clearSearch(){//callback for md-clear in searchbox
+      this.searchInput = ''
+      console.log('hh')
+      this.getContents()
     },
     update_chips(){
       var filters = this.$store.state.filters

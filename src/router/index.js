@@ -54,7 +54,8 @@ export default new Router({
     {
       path: '/tags/:tid/:tname',
       name: 'tags',
-      component: tags
+      component: tags,
+      props: (e) => ({ name: e.query.name })
     },
     { path: '*', redirect: '/' }, // catch all use case
   ]

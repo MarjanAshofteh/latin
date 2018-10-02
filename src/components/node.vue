@@ -86,6 +86,7 @@
         v-for="(tag , index) in node_content.tags" 
         :key="index" 
         :name="tag.name"
+        :tid="tag.tid"
       />
     </div>
     <!--<author
