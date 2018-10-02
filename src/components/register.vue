@@ -151,10 +151,8 @@
           "username" : this.form.username,
           "password" : this.form.password,
           "email" : this.form.email,
-          "full_name" : this.form.fullName,
-          "version" : "pbd_0"
+          "full_name" : this.form.fullName
         }
-        console.log(userData)
         axios.post('http://api.ed808.com/latin/user/register',
           userData,
           {
@@ -173,7 +171,6 @@
               this.$router.push('/user/'+ data.data.uid)
             }
             this.clearForm()
-            /* log user in by calling login component */
           })
           .catch(e => {
             if(e.hasOwnProperty('response')){
@@ -204,7 +201,7 @@
     },
     mounted(){
       if(this.$store.getters.getUid){
-      this.$router.push('/user/'+ this.$store.getters.getUid)
+        this.$router.push('/user/'+ this.$store.getters.getUid)
       }
       else{
         //this is just work for admins that login in api.edu befor(has session and doesnt have token)
@@ -219,13 +216,9 @@
         })
         .then((data) => {
           if(data.data.uid != 0){
-            this.user.uid = data.data.uid
-            this.user.picture = data.data.picture
-            this.user.username = data.data.username
             this.setCookie("token", data.data.token , 23)
-            this.setUid(data.data.uid)
-            this.IsLogin = true
-            this.$router.push('/user/'+ data.data.uid)
+            //under line is not working, I think.
+            this.$emit('do_navbar')
           }
         })
         .catch(e => {

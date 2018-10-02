@@ -28,7 +28,7 @@
           <div v-else class="header-menu-right md-layout-item md-size-30 md-xsmall-size-100"> 
             <md-menu md-size="small"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
 
-              <md-button class="md-icon-button" md-menu-trigger @click="opening_menu">
+              <md-button class="md-icon-button" md-menu-trigger>
                 <md-avatar>
                   <!--<img v-bind:src="get_gravatar('m.razmi.92@gmail.com',40)" alt="Avatar">-->
                   <img v-if="user.picture" v-bind:src="user.picture" alt="user_image">
@@ -40,7 +40,7 @@
               
               <md-menu-content>
                 <md-menu-item @click="$router.push('/user/'+ user.uid)">My Profile</md-menu-item>
-                <md-menu-item @click="log_user_out">log out</md-menu-item>
+                <md-menu-item @click="logUserOut">log out</md-menu-item>
               </md-menu-content>
             </md-menu>
           </div>
@@ -130,7 +130,7 @@
     created(){
       if(this.getCookie("token") == null){
         //in this way, user is not log in
-        console.log('token is unset')
+        //console.log('token is unset')
         this.NavbarDone = true
       }
       else {
@@ -144,7 +144,7 @@
     },
     methods:{
       update_navbar(){
-        console.log('token is set')
+        //console.log('token is set')
         axios.defaults.crossDomain = true;
         axios.defaults.withCredentials  = true;
         axios.get('http://api.ed808.com/latin/user/login/nav_bar_info',
@@ -154,7 +154,6 @@
           }
         })
         .then((data) => {
-          console.log(data)
           if(data.data.uid != 0){
             this.user.uid = data.data.uid
             this.user.picture = data.data.picture
@@ -195,8 +194,8 @@
         .then((data) => {
           this.eraseCookie('token')
           this.$store.commit('LOGOUT')
+          this.IsLogin = false
           this.IsLogOut = true
-          this.update_navbar()
           this.$router.push('/')
         })
         .catch(e => {
