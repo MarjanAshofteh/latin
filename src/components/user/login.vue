@@ -40,7 +40,7 @@
 import axios from 'axios'
 import { validationMixin } from 'vuelidate'
 import { required } from 'vuelidate/lib/validators'
-import { cookie } from './mixins/cookie.js'
+import { cookie } from '@/components/mixins/cookie.js'
 
 export default {
   name: 'login',

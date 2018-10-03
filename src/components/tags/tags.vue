@@ -1,5 +1,5 @@
 <template>
-  <div class="md-layout container">
+  <div class="md-layout container tags">
 
     <div class="loading" v-if="loading" style="width: 100%;">
       <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
@@ -61,7 +61,7 @@ export default {
 .pad-15{
     padding: 15px;
 }
-.container {
+.container.tags {
     text-align: left;
     > .md-size-100{
         margin: 15px auto !important;
@@ -69,11 +69,11 @@ export default {
         min-width: inherit;
     }
 }
-.title .md-card-content{
-    border: solid #eee;
+.tags .title .md-card-content{
+    border-top: solid #eee;
     border-width: 1px 0;
 }
-.md-headline{
+.tags .md-headline{
 	padding: 35px 0;
 	margin: 0 !important;
 	position: relative;

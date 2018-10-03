@@ -80,8 +80,7 @@
     //numeric,
     sameAs
   } from 'vuelidate/lib/validators'
-  import login from '@/components/login'
-  import { cookie } from './mixins/cookie.js'
+  import { cookie } from '@/components/mixins/cookie.js'
 
   export default {
     name: 'register',

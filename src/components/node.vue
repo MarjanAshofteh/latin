@@ -105,9 +105,9 @@
 </template>
 
 <script>
-  import eventData from '@/components/eventData'
-  import author from '@/components/author'
-  import tag from '@/components/tag'
+  import eventData from '@/components/fields/eventData'
+  import author from '@/components/fields/author'
+  import tag from '@/components/fields/tag'
   import axios from 'axios'
   export default {
     name: 'node',
@@ -126,7 +126,7 @@
       eventData,
       author,
       tag,
-      embedVideo: () => import('@/components/embedVideo')
+      embedVideo: () => import('@/components/fields/embedVideo')
     },
     mounted(){
       axios.get('http://api.ed808.com/latin/latin_contents/'+ this.nid + '?parameter[hash]=f275ebb87f408796b11f651b929293edf639554efb9e014c53c8b8d8e0f9db45',

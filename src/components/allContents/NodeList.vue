@@ -1,5 +1,5 @@
 <template>
-    <div class="contents md-elevation-1" style="padding: 0 15px;">
+    <div class="contents md-elevation-1" style="padding: 0 15px; margin:0px auto 50px;">
       <div 
         class="md-layout" 
         style="flex: 1 1 100%;	align-items: center;">

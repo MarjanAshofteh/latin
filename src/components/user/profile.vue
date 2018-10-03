@@ -109,8 +109,7 @@
 </template>
 <script>
 import axios from 'axios'
-import { cookie } from './mixins/cookie.js'
-
+import { cookie } from '@/components/mixins/cookie.js'
 export default {
     name:'profile',
     mixins: [cookie],
@@ -252,6 +251,5 @@ export default {
     }
     
 </style>
-
 
 
