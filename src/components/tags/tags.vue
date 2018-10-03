@@ -12,7 +12,7 @@
                 <h1>{{name}}</h1>
             </div>
             <article class="md-layout-item md-size-100"
-                v-html="description"
+                v-html="convertDomain(description)"
             ></article>
         </md-card-content>
     </md-card>
@@ -54,6 +54,17 @@ export default {
             this.loading = false
         })
     },
+    methods:{
+      convertDomain(value){ 
+        String.prototype.replaceAll = function(search, replacement) {
+          var target = this;
+          return target.replace(new RegExp(search, 'g'), replacement);
+        };
+        return value.replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
+        .replaceAll('="/sites', '="http://api.ed808.com/sites')
+        .replaceAll('="/node', '="http://ed808.com/node')
+      }
+    }
 }
 </script>
 
