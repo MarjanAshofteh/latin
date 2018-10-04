@@ -52,7 +52,7 @@ export default new Router({
       component: node
     },
     {
-      path: '/tags/:tid/:tname',
+      path: '/tag/:tid/:tname',
       name: 'tags',
       component: tags,
       props: (e) => ({ name: e.query.name })

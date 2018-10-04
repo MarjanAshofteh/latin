@@ -1,13 +1,12 @@
 <template>
     <div class="breadcrumb">
-        <router-link :to="'/'">Home</router-link>
-        <template v-for="(item, index) in links">
-            <span> > </span>
-            <router-link 
-                :to="item.url">
-                {{item.title}}
-            </router-link>
-        </template>
+        <router-link :to="'/'" class="first">Home</router-link>
+        <router-link 
+            v-for="(item, index) in links"
+            :key="index"
+            :to="item.url">
+            {{item.title}}
+        </router-link>
     </div>
 </template>
 
@@ -22,12 +21,17 @@ export default {
 .breadcrumb{
     padding: 10px 10px;
     a{
-        padding: 5px 10px;
+        padding: 5px 0px;
         color: #555;
-    }
-    span{
-        margin: 0 5px;
-        color: #9C27B0;
+        text-decoration: none;
+        &:not(.first):before {
+            content: "chevron_right";
+            margin: 0 5px 0 0;
+            font-family: material icons;
+            color: #E91E63;
+            font-size: 24px;
+            vertical-align: middle;
+        }
     }
 }
 </style>
