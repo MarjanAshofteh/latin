@@ -24,7 +24,7 @@
           <div class="box-head">
             <md-icon>account_box</md-icon>
             <span class="item-text">Personal</span>
-            <md-button @click="editThis('personal')" class="md-icon-button md-accent edit">
+            <md-button v-if="sameUser" @click="editThis('personal')" class="md-icon-button md-accent edit">
               <md-icon>edit</md-icon>
             </md-button>
           </div>
@@ -100,7 +100,7 @@
           <div class="box-head">
             <md-icon>perm_identity</md-icon>
             <span class="item-text">Bio</span>
-            <md-button @click="editThis('about')" class="md-icon-button md-accent edit">
+            <md-button v-if="sameUser" @click="editThis('about')" class="md-icon-button md-accent edit">
               <md-icon>edit</md-icon>
             </md-button>
           </div>
@@ -133,7 +133,7 @@
           <div class="box-head">
             <md-icon>school</md-icon>
             <span class="item-text">Education</span>
-            <md-button @click="editThis('education')" class="md-icon-button md-accent edit">
+            <md-button v-if="sameUser" @click="editThis('education')" class="md-icon-button md-accent edit">
               <md-icon>edit</md-icon>
             </md-button>
           </div>
@@ -200,7 +200,7 @@
           <div class="box-head">
             <md-icon>work</md-icon>
             <span class="item-text">Skills & Experince</span>
-            <md-button @click="editThis('work')" class="md-icon-button md-accent edit">
+            <md-button v-if="sameUser" @click="editThis('work')" class="md-icon-button md-accent edit">
               <md-icon>edit</md-icon>
             </md-button>
           </div>
@@ -216,30 +216,52 @@
               </div>
 
               <div class="default-text box-row" v-if="!user.skills">
-                <span class="label">job Experince: </span>
+                <span class="label">Skills: </span>
                 I have skill in ...
               </div>
               <div class="box-row" v-else>
                 <span class="label">Skills: </span>
                 {{user.skills}}
               </div>
+
+              <div class="box-row" v-if="user.hasOwnProperty('cv_url') && user.hasOwnProperty('cv_name')">
+                <span class="label">CV: </span>
+                <!--<md-icon>insert_drive_file</md-icon>-->
+                <a :href="user.cv_url" target="_self" download style="display: inline-block;vertical-align: bottom;"> {{user.cv_name}} </a>
+              </div>
+
             </div>
 
             <div class="box-edit" v-else>
               <div>
-                <md-field>
+                <md-field style="margin-bottom:24px;">
                   <label>Job</label>
                   <md-input v-model="user.job"></md-input>
                 </md-field>
 
-                <md-field class="with-label">
+                <md-field class="with-label" style="margin-bottom:24px;">
                   <label>Skills</label>
                   <md-textarea v-model="user.skills"></md-textarea>
                 </md-field>
 
+                <!--<md-field>
+                  <label>Cv</label>
+                  <md-file v-if="user.cv_name" v-model="uploadCv" :placeholder="user.cv_name" :ref="file" @change="handleFileUpload()"/>
+                  <md-file v-else v-model="uploadCv"/>
+                </md-field>-->
+
+                <div class="container">
+                  <div class="large-12 medium-12 small-12 cell">
+                    <label>File
+                      <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                    </label>
+                    <button v-on:click="submitFile()">Submit</button>
+                  </div>
+                </div>
+
                 <div class="loading" v-if="updateField">
                   <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
-                </div>   
+                </div>
               </div>
 
               <div class="md-layout md-alignment-center-space-between">
@@ -280,13 +302,54 @@ export default {
       loading: true,
       updateField: false,
       user:{},
-      editingEl:''
+      editingEl:'',
+      sameUser:true,
+      uploadCv:'',
+      file:{}
     }
   },
   mounted(){
+    this.$store.watch(
+      (state) => {return state.uid}, 
+      () => { this.isSameUser()}, 
+      { deep: true} 
+    )
+    
     this.getProfile()
   },
   methods:{
+    handleFileUpload(){
+      console.log(this.$refs.file.files[0])
+      this.file = this.$refs.file.files[0]
+    },
+    submitFile(){
+      let formData = new FormData();
+      formData.append('file', this.file);
+      //needs validation here
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
+      axios.post( 'http://api.ed808.com/latin/file/upload?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'X-CSRF-Token' : this.getCookie("token")
+          }
+        }
+        ).then(function(){
+          console.log('SUCCESS!!');
+        })
+        .catch(function(){
+          console.log('FAILURE!!');
+        });
+    },
+    isSameUser(){
+      if(this.$store.getters.getUid){
+        if(this.$store.getters.getUid == this.$route.params.uid)
+          this.sameUser = true
+          console.log(this.sameUser)
+      }
+    },
     editThis(fieldName){
       this.editingEl = fieldName
       this.updateField = false
@@ -357,7 +420,23 @@ export default {
         console.log('this is updating')
         this.updateField = false
         this.editingEl = ''
-        this.userapi[fieldName] = this.user[fieldName]
+        if(fieldName == 'education'){
+          this.userapi['university'] = this.user['university']
+          this.userapi['education_degree'] = this.user['education_degree']
+          this.userapi['education_field'] = this.user['education_field']
+        }
+        else if(fieldName == 'personal'){
+          this.userapi['full_name'] = this.user['full_name']
+          this.userapi['mail'] = this.user['mail']
+          this.userapi['mobile'] = this.user['mobile']
+        }
+        else if(fieldName == 'work'){
+          this.userapi['job'] = this.user['job']
+          this.userapi['skills'] = this.user['skills']
+        }
+        else{
+          this.userapi[fieldName] = this.user[fieldName]
+        }
       })
       .catch(e => {
         if(e.hasOwnProperty('response')){
@@ -374,8 +453,8 @@ export default {
       })
     },
     getProfile(){
-      axios.defaults.crossDomain = true;
-      axios.defaults.withCredentials  = true;
+      //axios.defaults.crossDomain = true;
+      //axios.defaults.withCredentials  = true;
       axios.get('http://api.ed808.com/latin/user/'+ this.uid + '/information',
         {
           headers:{
@@ -386,7 +465,6 @@ export default {
       .then((data) => {
         this.user = data.data
         this.userapi = Object.assign({}, this.user)
-
         /*for(var field in this.user){
           this.user[field] = data.data[field]
         }
