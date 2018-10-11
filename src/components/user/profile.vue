@@ -250,7 +250,7 @@
                   <md-file v-else v-model="uploadCv"/>
                 </md-field>-->
 
-                <div class="container">
+                <!--<div class="container">
                   <div class="large-12 medium-12 small-12 cell">
                     <label>File
                       <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
@@ -258,6 +258,7 @@
                     <button v-on:click="submitFile()">Submit</button>
                   </div>
                 </div>
+                -->
 
                 <div class="loading" v-if="updateField">
                   <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
@@ -303,7 +304,7 @@ export default {
       updateField: false,
       user:{},
       editingEl:'',
-      sameUser:true,
+      sameUser:false,
       uploadCv:'',
       file:{}
     }
