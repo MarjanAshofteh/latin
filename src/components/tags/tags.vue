@@ -26,7 +26,7 @@
             </div>
             <p v-if="image != ''" style="border-top: 1px solid #eee;width: calc(100% + 30px);margin-left: -15px;"></p>
             <div>
-                <img :src="image | createlink" v-if="image != ''" style="display: block;margin: auto;padding: 15px;">
+                <img :src="createlink(image)" v-if="image != ''" style="display: block;margin: auto;padding: 15px;">
                 <article class="md-layout-item md-size-100"
                     v-html="convertDomain(description)"
                 ></article>
@@ -63,7 +63,8 @@ export default {
         loading: {page: true, bookmark: false},
         errors:'',
         showError:false,
-        bookmarked: false
+        bookmarked: false,
+        metaDescription:''
       }
     },
     mounted(){
@@ -74,6 +75,8 @@ export default {
             this.description = data.description
             this.image = data.tag_image
             this.bookmarked = data.user_bookmark
+            if(data.meta_description != null)
+              this.metaDescription = data.meta_description
             if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
                 this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
             }
@@ -121,13 +124,54 @@ export default {
         } else{
             this.loading.bookmark = false
         }
-      }
-    },
-    filters: {
+      },
       createlink: function (value) {
         return value != null? "http://api.ed808.com/sites/default/files/" + value.substring(9) : ''
-      },
-    }   
+      }
+    },
+    metaInfo(){
+      return{
+        title: this.name,
+        meta: [
+          {name: 'description', content: this.metaDescription, vmid: 'description'},
+
+          // OpenGraph data (Most widely used)
+          {
+            'property': 'og:title',
+            'content': this.name,
+            'template': '%s - ed808',
+            'vmid': 'og:title'
+          },
+          {property: 'og:type', content: 'article', vmid: 'og:type'},
+          {property: 'og:url', content: 'http://ed808.com/tag/' + this.tid + '/' + this.replaceUrlSpace(this.name), vmid: 'og:url'},
+          {property: 'og:image', content: this.createlink(this.image), vmid: 'og:image'},
+          {property: 'og:description', content: this.metaDescription, vmid: 'og:description'},
+
+          // Twitter card
+          {
+            'name': 'twitter:title',
+            'content': this.name,
+            'template': '%s - ed808',
+            'vmid': 'twitter:title'
+          },
+          {name: 'twitter:description', content: this.metaDescription, vmid: 'twitter:description'},
+          {name: 'twitter:image:src', content: this.createlink(this.image), vmid: 'twitter:image:src'},
+
+          // Google / Schema.org markup:
+          {
+            'itemprop': 'name',
+            'content': this.name,
+            'template': '%s - ed808',
+            'vmid': 'name'
+          },
+          {itemprop: 'description', content: this.metaDescription, vmid: 'description'},
+          {itemprop: 'image', content: this.createlink(this.image), vmid: 'image'}
+        ],
+        links: [
+          {rel: 'canonical', href:'http://ed808.com/tag/' + this.tid + '/' + this.replaceUrlSpace(this.name)}
+        ]
+      }
+    }
 }
 </script>
 
