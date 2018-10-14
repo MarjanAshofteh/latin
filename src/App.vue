@@ -6,43 +6,51 @@
         <img src="http://ed808.com/staticfile/logo.png" class="logo">
 
         <div class="md-layout md-gutter large-screen">
-          <div class="header-menu-text md-layout-item md-size-70 md-xsmall-size-100"> 
+          <div class="header-menu-text md-layout-item md-size-100" style="text-align: right;"> 
+            
             <md-menu md-direction="bottom-start">
               <router-link to="/"><md-button>Home</md-button></router-link>
             </md-menu>
+            
             <md-menu md-direction="bottom-start">
               <router-link to="/about-us"><md-button>about us</md-button></router-link>
             </md-menu>
+            
             <md-menu md-direction="bottom-start">
               <router-link to="/contents"><md-button>all contents</md-button></router-link>
             </md-menu>
-          </div>
-          <div v-if="!IsLogin" class="header-menu-text md-layout-item md-size-30 md-xsmall-size-100"> 
-            <!--<md-menu md-direction="bottom-start">
-              <router-link to="/login"><md-button>login</md-button></router-link>
-            </md-menu>
-            <md-menu md-direction="bottom-start">
-              <router-link to="/register"><md-button>register</md-button></router-link>
-            </md-menu>-->
-          </div>
-          <div v-else class="header-menu-right md-layout-item md-size-30 md-xsmall-size-100"> 
-            <md-menu md-size="small"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
 
-              <md-button class="md-icon-button" md-menu-trigger>
-                <md-avatar>
-                  <!--<img v-bind:src="get_gravatar('m.razmi.92@gmail.com',40)" alt="Avatar">-->
-                  <img v-if="user.picture" v-bind:src="user.picture" alt="user_image">
-                  <img v-else src="http://civil808.com/en/staticfile/avatar.png" alt="user_image">
-                  <!--اینجا هم هم از تولتیپ استفاده نکن هم اسم طرف و بیار و بغل عکسش بنویس-->
-                  <md-tooltip v-if="user.username" md-direction="right">{{user.username}}</md-tooltip>
-                </md-avatar>
-              </md-button>
-              
-              <md-menu-content>
-                <md-menu-item @click="$router.push('/user/'+ user.uid)">My Profile</md-menu-item>
-                <md-menu-item @click="logUserOut">log out</md-menu-item>
-              </md-menu-content>
-            </md-menu>
+            <div v-if="!IsLogin" class="md-menu user-links"> 
+              <md-menu md-direction="bottom-start">
+                <router-link to="/login"><md-button>login</md-button></router-link>
+              </md-menu>
+
+              <md-menu md-direction="bottom-start">
+                <router-link to="/register">
+                  <md-button class="md-raised" style="background: #2196F3;color: #fff;">register</md-button>
+                </router-link>
+              </md-menu>
+            </div>
+
+            <div v-else class="md-menu user-links"> 
+              <md-menu md-size="big"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
+                <div @click="opening_menu" style="cursor: pointer;">
+                  <span v-if="user.username" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{user.username}}</span>
+                  <md-button class="md-icon-button">
+                    <md-avatar>
+                      <img v-if="user.picture" v-bind:src="user.picture" alt="user_image">
+                      <img v-else src="http://civil808.com/en/staticfile/avatar.png" alt="user_image">
+                    </md-avatar>
+                  </md-button>
+                </div>
+                
+                <md-menu-content>
+                  <md-menu-item @click="$router.push('/user/'+ user.uid)">My Profile</md-menu-item>
+                  <md-menu-item @click="logUserOut">log out</md-menu-item>
+                </md-menu-content>
+              </md-menu>
+
+            </div>
           </div>
         </div>
 
@@ -80,6 +88,7 @@
 
       </div>
     </header>
+    
     <div v-if="($route.name == 'login') || ($route.name == 'register')">
       <router-view @do_navbar="update_navbar" v-if="NavbarDone"/>
     </div>
@@ -317,6 +326,20 @@
         font-size: 28px;
         color: #ffffff;
       }
+    }
+  }
+  .md-menu.user-links {
+    padding-left: 10px;
+    margin-left: 15px;
+    position: relative;
+    &:before {
+      content: "";
+      height: 20px;
+      left: 0;
+      width: 1px;
+      background: #ccc;
+      position: absolute;
+      top: 8px;
     }
   }
 </style>

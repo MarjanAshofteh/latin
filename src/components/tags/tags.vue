@@ -73,7 +73,7 @@ export default {
         .then((data) => {
             this.name = data.name
             this.description = data.description
-            this.image = data.tag_image
+            this.image = data.tag_image != null ? data.tag_image : ''
             this.bookmarked = data.user_bookmark
             if(data.meta_description != null)
               this.metaDescription = data.meta_description
@@ -218,10 +218,12 @@ export default {
     display: flex;
 	justify-content: space-between;
 	align-items: center;
-    h1:before {
-        content: "#";
-        margin: 0 10px 0 0;
-        font-weight: normal;
+    .tags &{
+        h1:before {
+            content: "#";
+            margin: 0 10px 0 0;
+            font-weight: normal;
+        }
     }
     .follow {
         width: 120px;
