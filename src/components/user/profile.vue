@@ -454,8 +454,8 @@ export default {
       })
     },
     getProfile(){
-      //axios.defaults.crossDomain = true;
-      //axios.defaults.withCredentials  = true;
+      axios.defaults.crossDomain = true;
+      axios.defaults.withCredentials  = true;
       axios.get('http://api.ed808.com/latin/user/'+ this.uid + '/information',
         {
           headers:{

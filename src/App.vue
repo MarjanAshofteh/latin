@@ -34,7 +34,7 @@
 
             <div v-else class="md-menu user-links"> 
               <md-menu md-size="big"  md-direction="bottom-end" md-align-trigger :md-active.sync="menu_flag">
-                <div md-menu-trigger style="cursor: pointer;">
+                <div @click="opening_menu" style="cursor: pointer;">
                   <span v-if="user.username" style="display: inline-block;vertical-align: middle;margin: 0 10px -20px 15px;">{{user.username}}</span>
                   <md-button class="md-icon-button">
                     <md-avatar>
@@ -124,7 +124,7 @@
         user:{
           uid:'',
           picture:'',
-          username:'meysam razmi'
+          username:''
         },
         IsLogin:false,
         IsLogOut:false,
