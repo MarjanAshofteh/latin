@@ -2,8 +2,8 @@
 <template>
   <div class="aboutus">
     <div class="top-pic">
-      <img :src="pic | createlink" width="100%" height="241">
-      <h1>about us</h1>
+      <img :src="createlink(pic)" width="100%" height="241">
+      <h1>{{title}}</h1>
     </div>
     <div class="inner">
       <div class="atext" v-html="text">
@@ -19,7 +19,8 @@
     data(){
       return{
         text:'',
-        pic:''
+        pic:'',
+        title:'about us'
       }
     },
     mounted(){
@@ -37,10 +38,45 @@
 
       });
     },
-    filters:{
+    methods:{
       createlink: function (value) {
         if (!value) return ''
         return "http://ed808.com/api/sites/default/files/" + value.substring(9)
+      }
+    },
+    metaInfo(){
+      return{
+        title: 'about us',
+        meta: [
+          // OpenGraph data (Most widely used)
+          {
+            'property': 'og:title',
+            'content': this.title,
+            'template': '%s - ed808',
+            'vmid': 'og:title'
+          },
+          {property: 'og:url', content: 'http://ed808.com/about-us', vmid: 'og:url'},
+          {property: 'og:image', content: this.createlink(this.pic), vmid: 'og:image'},
+          {
+            'name': 'twitter:title',
+            'content': this.title,
+            'template': '%s - ed808',
+            'vmid': 'twitter:title'
+          },
+          {name: 'twitter:image:src', content: this.createlink(this.pic), vmid: 'twitter:image:src'},
+
+          // Google / Schema.org markup:
+          {
+            'name': 'itemprop',
+            'content': this.title,
+            'template': '%s - ed808',
+            'vmid': 'itemprop'
+          },
+          {itemprop: 'image', content: this.createlink(this.pic), vmid: 'image'}
+        ],
+        links: [
+          {rel: 'canonical', href: 'http://ed808.com/about-us'}
+        ]
       }
     }
   }

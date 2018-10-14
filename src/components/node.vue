@@ -54,7 +54,7 @@
       />
       <img 
         v-if="node_content.hasOwnProperty('image') && (node_content.image != null)" 
-        :src="node_content.image | createlink" 
+        :src="createlink(node_content.image)" 
         :alt="node_content.title"
       >
       <article 
@@ -137,7 +137,6 @@
       })
       .then((data) => {
         this.node_content = data.data.content
-        console.log(this.node_content)
         this.author = data.data.author
       })
       .then((data) => {
@@ -176,12 +175,53 @@
         return value.replaceAll('href="http://api.ed808.com', 'href="http://ed808.com')
         .replaceAll('="/sites', '="http://api.ed808.com/sites')
         .replaceAll('="/node', '="http://ed808.com/node')
-      }
-    },
-    filters: {
+      },
       createlink: function (value) {
         if (!value) return ''
         return "http://api.ed808.com/sites/default/files/" + value.substring(9)
+      }
+    },
+    metaInfo(){
+      return{
+        title: this.node_content.title,
+        meta: [
+          {name: 'description', content: this.node_content.meta_description, vmid: 'description'},
+
+          // OpenGraph data (Most widely used)
+          {
+            'property': 'og:title',
+            'content': this.node_content.title,
+            'template': '%s - ed808',
+            'vmid': 'og:title'
+          },
+          {property: 'og:type', content: 'article', vmid: 'og:type'},
+          {property: 'og:url', content: 'http://ed808.com/node/' + this.$route.params.nid, vmid: 'og:url'},
+          {property: 'og:image', content: this.createlink(this.node_content.image), vmid: 'og:image'},
+          {property: 'og:description', content: this.node_content.meta_description, vmid: 'og:description'},
+
+          // Twitter card
+          {
+            'name': 'twitter:title',
+            'content': this.node_content.title,
+            'template': '%s - ed808',
+            'vmid': 'twitter:title'
+          },
+          {name: 'twitter:description', content: this.node_content.meta_description, vmid: 'twitter:description'},
+          {name: 'twitter:image:src', content: this.createlink(this.node_content.image), vmid: 'twitter:image:src'},
+
+          // Google / Schema.org markup:
+          {
+            'itemprop': 'name',
+            'content': this.node_content.title,
+            'template': '%s - ed808',
+            'vmid': 'name'
+          },
+          {itemprop: 'description', content: this.node_content.meta_description, vmid: 'description'},
+          {itemprop: 'image', content: this.createlink(this.node_content.image), vmid: 'image'}
+        ],
+        links: [
+          {rel: 'canonical', href:'http://ed808.com/node/' + this.$route.params.nid}
+        ]
       }
     }
   }

@@ -3,7 +3,7 @@
     <section id="banner">
       <!--<img src="http://civil808.com/en/staticfile/top-banner.jpg" alt="">-->
       <div>
-        <h1>808 Educational and Engineering institute</h1>
+        <h1>{{title}}</h1>
         <span>specialized training in Civil and Architecture
           <span>Ed808.com</span>
         </span>
@@ -24,16 +24,30 @@ import NodeList from '@/components/allContents/NodeList'
 
 export default {
   name: 'home',
+  data(){
+    return{
+      title:'808 Educational and Engineering institute',
+    }
+  },
   components: {
     newspane,
     NodeList
+  },
+  metaInfo(){
+    return{
+      title: this.title,
+      titleTemplate: 'home | %s',
+      links:[
+        {rel: 'canonical', href: 'http://ed808.com'}
+      ]   
+    }
   }
 }
 </script>
 
 <style lang="scss">
   section#banner{
-    background-image: url(http://civil808.com/en/staticfile/top-banner.jpg);
+    background-image: url(http://ed808.com/staticfile/top-banner.jpg);
     background-size: cover;
     height: 400px;
     display: flex;
