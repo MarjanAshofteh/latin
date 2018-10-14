@@ -33,7 +33,8 @@ export default new Router({
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: login,
+      props: (e) => ({ name: e.query.name })
     },
     {
       path: '/contents',

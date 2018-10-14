@@ -1,41 +1,43 @@
 <template>
     <div class="contents md-elevation-1" style="padding: 0 15px; margin:0px auto 50px;">
-      <div 
-        class="md-layout" 
-        style="flex: 1 1 100%;	align-items: center;">
-        <span 
-          class="md-layout-item" 
-          style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 13px; text-align: right;" 
-          v-if="count > 0">
-          {{pager_count}}
-          <md-icon style="margin-right: 8px;font-size: 20px !important;">widgets</md-icon>
-          </span>
-        <md-field 
-          class="md-layout-item" 
-          style="max-width: 500px;"
-          md-clearable 
-          @md-clear="clearSearch()"
-          md-layout="box">
-          <label>Search</label>
-          <md-input class="reset-input"
-            v-model.lazy="searchInput" 
-            @keyup.native.enter="getContents()"></md-input>
-          <md-icon>search</md-icon>
-        </md-field>
-      </div>
+      <div class="control-box">
+        <div 
+          class="md-layout" 
+          style="flex: 1 1 100%;	align-items: center;">
+          <span 
+            class="md-layout-item" 
+            style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 13px; text-align: right;" 
+            v-if="count > 0">
+            {{pager_count}}
+            <md-icon style="margin-right: 8px;font-size: 20px !important;">widgets</md-icon>
+            </span>
+          <md-field 
+            class="md-layout-item" 
+            style="max-width: 500px;"
+            md-clearable 
+            @md-clear="clearSearch()"
+            md-layout="box">
+            <label>Search</label>
+            <md-input class="reset-input"
+              v-model.lazy="searchInput" 
+              @keyup.native.enter="getContents()"></md-input>
+            <md-icon>search</md-icon>
+          </md-field>
+        </div>
 
-      <div v-show="Object.keys(chips).length > 0" class="chips-container">
-        <md-chip 
-          class="" 
-          md-deletable 
-          v-for="(value, key) in chips" :key="key" 
-          @md-delete="chips_delete(key)"
-        >
-          {{value}}
-        </md-chip>
+        <div v-show="Object.keys(chips).length > 0" class="chips-container">
+          <md-chip 
+            class="" 
+            md-deletable 
+            v-for="(value, key) in chips" :key="key" 
+            @md-delete="chips_delete(key)"
+          >
+            {{value}}
+          </md-chip>
+        </div>
+        
+        <md-divider></md-divider>
       </div>
-      
-      <md-divider></md-divider>
 
       <md-empty-state v-if="count < 1 && Object.keys(chips).length > 0" style="	margin: 30px auto;"
         md-rounded

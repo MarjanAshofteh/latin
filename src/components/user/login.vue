@@ -10,20 +10,20 @@
               <div class="md-layout-item md-small-size-100 md-size-100">
                   <md-field :class="getValidationClass('emailOrUsename')">
                   <label for="email">Email or Username</label>
-                  <md-input name="username_email" id="username_email" autocomplete="email" v-model="form.username_email" :disabled="sending" required/>
+                  <md-input name="username_email" id="username_email" autocomplete="email" v-model="form.username_email" :disabled="loading.sending" required/>
                   <span class="md-error" v-if="!$v.form.username_email.required">The email or usename is required</span>
                   </md-field>
               </div>
               <div class="md-layout-item md-small-size-100 md-size-100">
                   <md-field :class="getValidationClass('password')">
                   <label for="password">Password</label>
-                  <md-input type="password" id="password" name="password" v-model="form.password" :disabled="sending" autocomplete="current-password" required/>
+                  <md-input type="password" id="password" name="password" v-model="form.password" :disabled="loading.sending" autocomplete="current-password" required/>
                   <span class="md-error" v-if="!$v.form.password.required">The Password is required</span>
                   </md-field>
               </div>
             </md-card-content>
 
-            <md-progress-bar md-mode="indeterminate" v-if="sending" />
+            <md-progress-bar md-mode="indeterminate" v-if="loading.sending" />
             
             <vue-recaptcha
               ref="recaptcha"
@@ -34,7 +34,7 @@
             </vue-recaptcha>
 
             <md-card-actions>
-              <md-button type="submit" class="md-primary" :disabled="sending">Log In</md-button>
+              <md-button type="submit" class="md-primary" :disabled="loading.sending">Log In</md-button>
             </md-card-actions>
         </md-card>
         <md-snackbar :md-active.sync="userSaved">{{ lastUser }} you are log in successfully!</md-snackbar>
@@ -67,7 +67,7 @@ export default {
         password: null,
       },
       userSaved: false,
-      sending: false,
+      loading: {sending: false},
       lastUser: null
     }
   },
@@ -96,7 +96,7 @@ export default {
         this.form.password = null
     },
     logUserIn(recaptchaToken){
-      this.sending = true
+      this.loading.sending = true
       this.$refs.recaptcha.reset();
 
       //sending to login api
@@ -123,11 +123,18 @@ export default {
         this.setCookie("token", jsonCookie2 , 23)
         this.lastUser = `${this.form.username_email}`
         this.userSaved = true
-        this.sending = false
+        
         this.$emit('do_navbar')
+        this.loading.sending = false
+
         if(data.data.uid != 0){
           this.setUid(data.data.uid)
-          this.$router.push('/user/'+ data.data.uid)
+
+          //redirect after successfull login
+          if(this.$route.query.hasOwnProperty('callback'))
+            this.$router.push(this.$route.query.callback)
+          else
+            this.$router.push('/user/'+ data.data.uid)
         }
         this.clearForm()
       })
