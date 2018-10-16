@@ -45,7 +45,9 @@
                 </div>
                 
                 <md-menu-content>
-                  <md-menu-item @click="$router.push('/user/'+ user.uid)">My Profile</md-menu-item>
+                  <md-menu-item>
+                    <router-link :to="'/user/'+ user.uid" target="_blank">My Profile</router-link>
+                  </md-menu-item>
                   <md-menu-item @click="logUserOut">log out</md-menu-item>
                 </md-menu-content>
               </md-menu>

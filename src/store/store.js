@@ -7,6 +7,7 @@ const store = new Vuex.Store({
   //strict: process.env.NODE_ENV !== 'production',  
   state:{
     uid:0,
+    roles:['administrator'],
     //allContents page
     filtersLoading: true,
     selected : {

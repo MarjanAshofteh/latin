@@ -46,7 +46,7 @@
         <NodeList 
             :filterEnabled="false" 
             :router="'allContents'" 
-            :tag="tid" 
+            :tag="this.$route.params.tid" 
             class="md-card md-theme-default md-layout-item md-size-80 md-medium-size-100"
             />
     </div>
@@ -77,34 +77,42 @@ export default {
         errors:'',
         showError:false,
         bookmarked: false,
-        windowWidth: 0,
+        windowWidth: 1366,
         collapse: true,
         metaDescription:''
       }
     },
+    beforeRouteUpdate(to, from, next) {
+        this.tid = to.params.tid
+        this.name = to.params.tname,
+        next()
+    },
     mounted(){
-        axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
-        .then((data) => data.data)
-        .then((data) => {
-            this.name = data.name
-            this.description = data.description
-            this.image = data.tag_image != null ? data.tag_image : ''
-            this.bookmarked = data.user_bookmark
-            
-            if(data.meta_description != null)
-              this.metaDescription = data.meta_description
-            if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
-                this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
-            }
-            this.loading.page = false
-        })
-        this.$nextTick(() => {
-            window.addEventListener('resize', () => {
-                this.windowWidth = window.innerWidth
-            });
-        })
+        this.mount()
     },
     methods:{
+        mount(){
+            axios.get('http://api.ed808.com/latin/tag/'+ this.tid + '/contents')
+            .then((data) => data.data)
+            .then((data) => {
+                this.name = data.name
+                this.description = data.description != null ? data.description : ''
+                this.image = data.tag_image != null ? data.tag_image : ''
+                this.bookmarked = data.user_bookmark
+                
+                if(data.meta_description != null)
+                this.metaDescription = data.meta_description
+                if(this.name != this.replaceUrlSpace(this.$route.params.tname, true)){
+                    this.$router.replace({path:`/tag/${this.tid}/${this.replaceUrlSpace(this.name)}`})
+                }
+                this.loading.page = false
+            })
+            this.$nextTick(() => {
+                window.addEventListener('resize', () => {
+                    this.windowWidth = window.innerWidth
+                });
+            })
+        },
       convertDomain(value){ 
         String.prototype.replaceAll = function(search, replacement) {
           var target = this;
