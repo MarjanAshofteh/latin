@@ -6,7 +6,7 @@
           style="flex: 1 1 100%;	align-items: center;">
           <span 
             class="md-layout-item" 
-            style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 13px; text-align: right;" 
+            style="flex: 0 260px; margin-left: auto;order: 1;	font-size: 15px; text-align: right;" 
             v-if="count > 0">
             {{pager_count}}
             <md-icon style="margin-right: 8px;font-size: 20px !important;">widgets</md-icon>
@@ -278,7 +278,7 @@ export default {
     pager_count: function(){
       var start = (this.page - 1) * 30 + 1
       var till = (this.count - start > 29)? start + 29 : this.count
-      return 'Showing ' + start +' - '+ till + ' From '+ this.count +' Contents'
+      return 'Showing ' + start +' - '+ till + ' From '+ this.count
     },
   },
 }

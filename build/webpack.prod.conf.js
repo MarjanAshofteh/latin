@@ -11,6 +11,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
+//prerender
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
+const PuppeteerRenderer = PrerenderSPAPlugin.PuppeteerRenderer
+
 const env = require('../config/prod.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -41,6 +45,16 @@ const webpackConfig = merge(baseWebpackConfig, {
       sourceMap: config.build.productionSourceMap,
       parallel: true
     }),
+    new PrerenderSPAPlugin({
+      staticDir: path.resolve(__dirname, '../dist'), // The path to the folder where index.html is.
+      routes: [
+        '/', 
+        '/about-us',
+        '/contents',
+      ], // List of routes to prerender.
+      renderer: new PuppeteerRenderer()
+    }),
+
     // extract css into its own file
     new ExtractTextPlugin({
       filename: utils.assetsPath('css/[name].[contenthash].css'),
