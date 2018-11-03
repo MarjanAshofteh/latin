@@ -24,8 +24,8 @@
             :key="event.nid">
           <newsteaser 
             :newstitle="event.title" 
-            :newscompany="event.field_company_value" 
-            :newsdate="event.field_eventtime_value | erasetime" 
+            :newscompany="event.company" 
+            :newsdate="event.eventtime | erasetime" 
             :newsnid="event.nid"
             @setNid="show_event(event.nid)"/>
         </slide>
@@ -54,7 +54,7 @@ export default {
     }
   },
   mounted() {
-    fetch('http://api.ed808.com/latin/latin_news?hash=21567cb05bd1fa6fa9d20ea55b4f26b6f90446f7726bc305dbc2c9f7c2fcf054')
+    fetch('http://api.ed808.com/latin/event')
       .then(response => response.json())
       .then((data) => {
           this.events = data
