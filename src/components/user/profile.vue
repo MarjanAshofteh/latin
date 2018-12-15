@@ -1,13 +1,37 @@
 <template>
   <div>
     <md-content class="md-elevation-1 top">
+
       <div class="background-image">
+
+        <div class="dim" v-if="updateField.background_image"></div>
+
         <img v-if="user.hasOwnProperty('background_image') && !loading" v-bind:src="user.background_image" alt="background image">
-        <!--<img v-else src="http://civil808.com/en/staticfile/user_background2.jpg" alt="background image" style="opacity: 0.7;width: 100%;">-->
+
+        <div v-if="sameUser" class="edit-background-image">
+          <input type="file" id="file" ref="file1" v-on:change="handleFileUpload('background_image')"/>
+          <md-icon class="md-size-2x">edit</md-icon>
+        </div>
+        <div class="spinner-loading" v-if="updateField.background_image">
+          <md-progress-spinner :md-diameter="100" :md-stroke="5" md-mode="indeterminate"></md-progress-spinner>
+        </div>
       </div>
+
       <div class="user-image">
-        <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name">
+
+        <div class="dim" v-if="updateField.picture"></div>
+
+        <img v-if="user.hasOwnProperty('picture') && !loading && (user.picture!=0)" v-bind:src="user.picture" v-bind:alt="'image of ' + user.name" v-bind:title="'image of ' + user.name">
+
         <img v-else src="http://ed808.com/staticfile/avatar.png" v-bind:alt="'image of ' + user.name">
+        
+        <div v-if="sameUser" class="edit-picture">
+          <input type="file" id="file" ref="file2" v-on:change="handleFileUpload('picture')"/>
+          <md-icon>photo_camera</md-icon>
+        </div>
+        <div class="spinner-loading" v-if="updateField.picture">
+          <md-progress-spinner :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+        </div>
       </div>
       <div class="user-tabs">
         <md-tabs md-sync-route>
@@ -62,7 +86,7 @@
                   <md-button class="md-raised green" @click="doneEditingThis('personal')">Save</md-button>
                 </div>
                 <div class="md-layout-item">
-                  <md-button class="md-raised" @click="cancleEditingThis('personal')">Cancel</md-button>
+                  <md-button @click="cancleEditingThis('personal')">Cancel</md-button>
                 </div>
               </div>
             </div>
@@ -123,7 +147,7 @@
                   <md-button class="md-raised green" @click="doneEditingThis('about')">Save</md-button>
                 </div>
                 <div class="md-layout-item">
-                  <md-button class="md-raised" @click="cancleEditingThis('about')">Cancel</md-button>
+                  <md-button @click="cancleEditingThis('about')">Cancel</md-button>
                 </div>
               </div>
             </div>
@@ -190,7 +214,7 @@
                   <md-button class="md-raised green" @click="doneEditingThis('education')">Save</md-button>
                 </div>
                 <div class="md-layout-item">
-                  <md-button class="md-raised" @click="cancleEditingThis('education')">Cancel</md-button>
+                  <md-button @click="cancleEditingThis('education')">Cancel</md-button>
                 </div>
               </div>
             </div>
@@ -248,17 +272,16 @@
                   <label>Cv</label>
                   <md-file v-if="user.cv_name" v-model="uploadCv" :placeholder="user.cv_name" :ref="file" @change="handleFileUpload()"/>
                   <md-file v-else v-model="uploadCv"/>
-                </md-field>-->
+                </md-field>
 
-                <!--<div class="container">
+                <div class="container">
                   <div class="large-12 medium-12 small-12 cell">
                     <label>File
                       <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
                     </label>
                     <button v-on:click="submitFile()">Submit</button>
                   </div>
-                </div>
-                -->
+                </div>-->
 
                 <div class="loading" v-if="updateField">
                   <md-progress-bar md-mode="indeterminate" md-theme-default></md-progress-bar>
@@ -270,7 +293,7 @@
                   <md-button class="md-raised green" @click="doneEditingThis('work')">Save</md-button>
                 </div>
                 <div class="md-layout-item">
-                  <md-button class="md-raised" @click="cancleEditingThis('work')">Cancel</md-button>
+                  <md-button @click="cancleEditingThis('work')">Cancel</md-button>
                 </div>
               </div>
             </div>
@@ -287,6 +310,7 @@
     </span>-->
   </div>
 </template>
+
 <script>
 import axios from 'axios'
 import { cookie } from '@/components/mixins/cookie.js'
@@ -305,8 +329,20 @@ export default {
       user:{},
       editingEl:'',
       sameUser:false,
-      uploadCv:'',
-      file:{}
+      updateField:{
+        picture:false,
+        background_image:false
+      },
+      file:{
+        picture:{},
+        background_image:{},
+        cv:{}
+      },
+      afterUpload:{
+        picture:{},
+        background_image:{},
+        cv:{}
+      }
     }
   },
   mounted(){
@@ -319,17 +355,23 @@ export default {
     this.getProfile()
   },
   methods:{
-    handleFileUpload(){
-      console.log(this.$refs.file.files[0])
-      this.file = this.$refs.file.files[0]
+    handleFileUpload(fieldName){
+      this.updateField[fieldName] = true
+      if(fieldName == 'picture'){
+        this.file[fieldName] = this.$refs.file2.files[0]
+      }
+      if(fieldName == 'background_image'){
+        this.file[fieldName] = this.$refs.file1.files[0]
+      }
+      this.submitFile(fieldName)
     },
-    submitFile(){
+    submitFile(fieldName){
       let formData = new FormData();
-      formData.append('file', this.file);
+      formData.append('file', this.file[fieldName]);
       //needs validation here
       axios.defaults.crossDomain = true;
       axios.defaults.withCredentials  = true;
-      axios.post( 'http://api.ed808.com/latin/file/upload?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
+      axios.post('http://api.ed808.com/latin/file/upload?parameter[hash]=020042f70a981fd6806ecf5e53f2267b377da9d9f981e15297d70c3f7c2a87d0',
         formData,
         {
           headers: {
@@ -337,11 +379,15 @@ export default {
             'X-CSRF-Token' : this.getCookie("token")
           }
         }
-        ).then(function(){
-          console.log('SUCCESS!!');
+        ).then((data) =>{
+          this.afterUpload[fieldName] = data.data.file
+          console.log('New '+ fieldName + ' was upload SUCCESSly')
+          if((fieldName == 'picture') || (fieldName == 'background_image')){
+            this.doneEditingThis(fieldName)
+          }
         })
-        .catch(function(){
-          console.log('FAILURE!!');
+        .catch((e) =>{
+          console.log('FAILURE!!' + e)
         });
     },
     isSameUser(){
@@ -402,6 +448,12 @@ export default {
           "skills" : this.user['skills']
         }
       }
+      else if((fieldName == 'picture') || (fieldName == 'background_image')){
+        var data = {
+          "hash" : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
+          [fieldName] : this.afterUpload[fieldName]
+        }
+      }
       else{
         var data = {
           "hash" : "50e185c2e0c2bc30215338db776022c92ecbc441fd933688c6bf4f274c863c60",
@@ -418,8 +470,8 @@ export default {
         }
       })
       .then((data) => {
-        console.log('this is updating')
         this.updateField = false
+        this.updateField[fieldName] = false
         this.editingEl = ''
         if(fieldName == 'education'){
           this.userapi['university'] = this.user['university']
@@ -437,6 +489,12 @@ export default {
         }
         else{
           this.userapi[fieldName] = this.user[fieldName]
+        }
+        if((fieldName == 'picture') || (fieldName == 'background_image')){
+          console.log(this.afterUpload[fieldName].uri)
+          console.log(this.createlink(this.afterUpload[fieldName].uri))
+          this.user[fieldName] = this.createlink(this.afterUpload[fieldName].uri)
+          console.log('New '+ fieldName + ' was saved SUCCESSly')
         }
       })
       .catch(e => {
@@ -478,6 +536,10 @@ export default {
       .catch(e => {
         this.errors = e.response.data
       });
+    },
+    createlink: function (value) {
+      if (!value) return ''
+      return "http://api.ed808.com/sites/default/files/" + value.substring(9)
     }
   }
 }
@@ -493,23 +555,116 @@ export default {
     background: #fff;
   }
   .top{
+    .dim{
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      right: 0;
+      left: 0;
+      background-color: #868686c4;
+    }
     position: relative;
+    .spinner-loading{
+      position: absolute;
+      top: calc(50% - 30px);
+      right: calc(50% - 30px);
+    }
     .background-image{
       width: 100%;
       height: 230px;
       overflow: hidden;
       background-color: #c4b6c2;
+      position: relative;
+      &:hover{
+        .edit-background-image{
+          opacity: 1;
+        }
+      }
+      .spinner-loading{
+        top: calc(50% - 50px);
+      }
+      .edit-background-image{
+        position: absolute;
+        transition: 0.5s cubic-bezier(0.25, 0.8, 0.5, 1);
+        width: 60px;
+        right: 33px;
+        top: 30px;
+        background-color: #00000059;
+        opacity: 0;
+        height: 60px;
+        border-radius: 50%;
+        [type="file"] {
+          height: 100%;
+          overflow: hidden;
+          width: 100%;
+          opacity: 0;
+          z-index: 3;
+          position: relative;
+          cursor: pointer;
+        }
+        [type="file"] + i {
+          position: absolute;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          z-index: 0;
+          width: 30px;
+          height: 30px;
+          max-width: 30px;
+          font-size: 30px !important;
+          color: #ffffff;
+        }
+      }
     }
     .user-image{
       position: absolute;
       top: 138px;
       left: 14%;
       z-index: 2;
+      overflow: hidden;
+      border-radius: 50%;
+      border: 3px solid white;
+      &:hover{
+        .edit-picture{
+          opacity: 1;
+          bottom: 0;
+          top: 50%;
+        }
+      }
+      .edit-picture{
+        position: absolute;
+        transition: .5s cubic-bezier(.25,.8,.5,1);
+        width: 100%;
+        height: 50%;
+        right: 0;
+        left: 0;
+        background-color: #ffffff82;
+        opacity: 0;
+        top: 100%;
+        [type="file"] {
+          height: 100%;
+          overflow: hidden;
+          width: 100%;
+          opacity: 0;
+          z-index: 3;
+          position: relative;
+          cursor: pointer;
+        }
+        [type="file"] + i {
+          font-weight: bold;
+          position: absolute;
+          top: 0;
+          right: 0;
+          left: 0;
+          bottom: 0;
+          z-index: 0;
+        }
+      }
       img{
         width: 132px;
         height: auto;
-        border-radius: 50%;
-        border: 3px solid white;
       } 
     }
     .user-tabs{
@@ -545,27 +700,18 @@ export default {
         border-bottom: 1px solid #eee;
         min-height: 48px;
         padding: 4px 16px;
-        display: -webkit-box;
         display: flex;
-        -webkit-box-align: center;
         align-items: center;
-        -webkit-box-pack: justify;
         justify-content: space-between;
         transition: padding .4s cubic-bezier(.25,.8,.25,1);
-        will-change: padding;
         .md-icon:first-child {
           margin-right: 14px;
           margin-top: 7px;
         }
         .item-text{
-          -webkit-box-flex: 1;
           flex: 1;
-          display: -webkit-box;
           display: flex;
-          -webkit-box-orient: vertical;
-          -webkit-box-direction: normal;
           flex-direction: column;
-          -webkit-box-align: start;
           align-items: flex-start;
           overflow: hidden;
           line-height: 1.25em;

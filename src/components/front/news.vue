@@ -85,7 +85,7 @@ export default {
     --md-theme-default-primary: #673AB7;
 }
 .md-progress-spinner {
-	position: absolute;
+	//position: absolute;
 }
 .md-content.news{
   width: calc(100% - 72px);
